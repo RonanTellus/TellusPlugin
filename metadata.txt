@@ -16,7 +16,7 @@ email=dimas.espinasse@etudiant.univ-rennes1.fr
 
 about=Intégration de données géophysiques brutes et des traces GPS et visualisation du résultat de certains traitements de données développés en interne.
 
-tracker=https://github.com/dimespi/TellusPlugin
+tracker=https://github.com/dimespi/TellusPlugin/issues
 repository=https://github.com/dimespi/TellusPlugin
 # End of mandatory metadata
 
