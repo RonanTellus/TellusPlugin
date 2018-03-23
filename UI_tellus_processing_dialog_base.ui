@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>457</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tellus processing</string>
   </property>
-  <widget class="QDialogButtonBox" name="button_box">
+  <widget class="QDialogButtonBox" name="BtnBoxOkCancel">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -34,43 +34,43 @@
     <rect>
      <x>0</x>
      <y>10</y>
-     <width>381</width>
+     <width>451</width>
      <height>41</height>
     </rect>
    </property>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="lblDG">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>0</y>
-      <width>141</width>
-      <height>41</height>
+      <width>91</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Données géoradar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="parcourirBtn">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>5</y>
+      <x>350</x>
+      <y>0</y>
       <width>80</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Parcourir</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="pathLineEdit">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>110</x>
       <y>0</y>
-      <width>113</width>
-      <height>41</height>
+      <width>231</width>
+      <height>21</height>
      </rect>
     </property>
    </widget>
@@ -79,7 +79,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>button_box</sender>
+   <sender>BtnBoxOkCancel</sender>
    <signal>accepted()</signal>
    <receiver>TellusProcessingDialogBase</receiver>
    <slot>accept()</slot>
@@ -95,7 +95,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>button_box</sender>
+   <sender>BtnBoxOkCancel</sender>
    <signal>rejected()</signal>
    <receiver>TellusProcessingDialogBase</receiver>
    <slot>reject()</slot>
