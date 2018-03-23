@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_tellus_processing_dialog_base.ui'
 #
-# Created: Thu Mar 22 21:18:50 2018
+# Created: Fri Mar 23 12:07:23 2018
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,7 +36,7 @@ class Ui_TellusProcessingDialogBase(object):
         self.widget.setGeometry(QtCore.QRect(0, 10, 451, 41))
         self.widget.setObjectName(_fromUtf8("widget"))
         self.lblDG = QtGui.QLabel(self.widget)
-        self.lblDG.setGeometry(QtCore.QRect(10, 0, 91, 21))
+        self.lblDG.setGeometry(QtCore.QRect(10, 0, 101, 21))
         self.lblDG.setObjectName(_fromUtf8("lblDG"))
         self.parcourirBtn = QtGui.QPushButton(self.widget)
         self.parcourirBtn.setGeometry(QtCore.QRect(350, 0, 80, 21))
@@ -44,6 +44,15 @@ class Ui_TellusProcessingDialogBase(object):
         self.pathLineEdit = QtGui.QLineEdit(self.widget)
         self.pathLineEdit.setGeometry(QtCore.QRect(110, 0, 231, 21))
         self.pathLineEdit.setObjectName(_fromUtf8("pathLineEdit"))
+        self.widget_2 = QtGui.QWidget(TellusProcessingDialogBase)
+        self.widget_2.setGeometry(QtCore.QRect(0, 70, 451, 41))
+        self.widget_2.setObjectName(_fromUtf8("widget_2"))
+        self.sbParamDistance = QtGui.QSpinBox(self.widget_2)
+        self.sbParamDistance.setGeometry(QtCore.QRect(380, 10, 42, 22))
+        self.sbParamDistance.setObjectName(_fromUtf8("sbParamDistance"))
+        self.label = QtGui.QLabel(self.widget_2)
+        self.label.setGeometry(QtCore.QRect(10, 10, 321, 16))
+        self.label.setObjectName(_fromUtf8("label"))
 
         self.retranslateUi(TellusProcessingDialogBase)
         QtCore.QObject.connect(self.BtnBoxOkCancel, QtCore.SIGNAL(_fromUtf8("accepted()")), TellusProcessingDialogBase.accept)
@@ -54,6 +63,7 @@ class Ui_TellusProcessingDialogBase(object):
         TellusProcessingDialogBase.setWindowTitle(_translate("TellusProcessingDialogBase", "Tellus processing", None))
         self.lblDG.setText(_translate("TellusProcessingDialogBase", "Données géoradar", None))
         self.parcourirBtn.setText(_translate("TellusProcessingDialogBase", "Parcourir", None))
+        self.label.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
 
 
 if __name__ == "__main__":
