@@ -6,19 +6,91 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>300</height>
+    <width>552</width>
+    <height>281</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tellus processing</string>
   </property>
-  <widget class="QDialogButtonBox" name="BtnBoxOkCancel">
+  <widget class="QRadioButton" name="radioButton_2">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>40</y>
+     <width>117</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Dossier</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>240</y>
-     <width>341</width>
+     <y>15</y>
+     <width>101</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>40</y>
+     <width>117</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Fichier</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="distance" native="true">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>165</y>
+     <width>511</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <widget class="QSpinBox" name="sbParamDistance">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>10</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Distance entre chaque points</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>235</y>
+     <width>511</width>
      <height>32</height>
     </rect>
    </property>
@@ -29,119 +101,79 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
+  <widget class="QWidget" name="source" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>10</y>
-     <width>451</width>
-     <height>41</height>
+     <x>20</x>
+     <y>95</y>
+     <width>511</width>
+     <height>61</height>
     </rect>
    </property>
-   <widget class="QLabel" name="lblDG">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>101</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Données géoradar</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="parcourirBtn">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>0</y>
+      <x>430</x>
+      <y>20</y>
       <width>80</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Parcourir</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="pathLineEdit">
+   <widget class="QLabel" name="lblDG">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>0</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="widget_2" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>70</y>
-     <width>451</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <widget class="QSpinBox" name="sbParamDistance">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>10</y>
-      <width>42</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>321</width>
-      <height>16</height>
+      <x>30</x>
+      <y>20</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Distance entre chaque points</string>
+     <string>Données géoradar</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pathLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>261</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>71</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
+  <widget class="QRadioButton" name="radioButton_3">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>40</y>
+     <width>117</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Database</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>BtnBoxOkCancel</sender>
-   <signal>accepted()</signal>
-   <receiver>TellusProcessingDialogBase</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>BtnBoxOkCancel</sender>
-   <signal>rejected()</signal>
-   <receiver>TellusProcessingDialogBase</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
