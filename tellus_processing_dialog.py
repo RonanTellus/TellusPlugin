@@ -30,6 +30,11 @@ from qgis.core import *
 from qgis.gui import *
 from UI_tellus_processing_dialog_base import Ui_TellusProcessingDialogBase
 
+from tellus_tools.survey_reader import survey_reader
+from tellus_tools.radar_tools import *
+import matplotlib.pyplot as plt 
+import os 
+import csv
 
 import resources
 import os
@@ -48,6 +53,7 @@ class TellusProcessingDialog(QDialog):
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
+      
         
        
     def inFile(self):
@@ -68,3 +74,19 @@ class TellusProcessingDialog(QDialog):
             
         self.ui.pathLineEdit.setText(inFilePath)   
     
+    def createtoline(self):
+        
+        filename = self.ui.pathLineEdit.getText()
+        
+        seg = survey_reader(filename)
+        rad_img = radargram(seg.get_traces())
+        rad_sample  = rad_img.read_trace([0,-1,10])
+        gps_sample  = rad_img.read_position_meter([0,-1,10])
+        test = rad_sample.T
+        valeurs = [""]*len(test)
+     
+        for i in range(len(test)):
+            print(i)
+            valeurs[i]= [i,gps_sample[1][i], gps_sample[0][i], gps_sample[2][i]]
+            
+        
