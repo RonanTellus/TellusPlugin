@@ -7,56 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>552</width>
-    <height>281</height>
+    <height>195</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tellus processing</string>
   </property>
-  <widget class="QRadioButton" name="radioButtonDossier">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>40</y>
-     <width>117</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Dossier</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblSourceType">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>15</y>
-     <width>101</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonFichier">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>40</y>
-     <width>117</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Fichier</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="distance" native="true">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>165</y>
+     <y>90</y>
      <width>511</width>
      <height>51</height>
     </rect>
@@ -89,7 +50,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>95</y>
+     <y>20</y>
      <width>511</width>
      <height>61</height>
     </rect>
@@ -144,26 +105,13 @@
     </property>
    </widget>
   </widget>
-  <widget class="QRadioButton" name="radioButtonDatabase">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>40</y>
-     <width>117</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Database</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="buttonLancer">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>250</y>
+     <x>450</x>
+     <y>150</y>
      <width>80</width>
-     <height>16</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -173,10 +121,10 @@
   <widget class="QPushButton" name="buttonAnnuler">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>250</y>
+     <x>360</x>
+     <y>150</y>
      <width>80</width>
-     <height>16</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
