@@ -55,11 +55,8 @@ class TellusProcessingDialog(QDialog):
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
-<<<<<<< HEAD
-        self.connect(self.ui.buttonLancer,SIGNAL("clicked()"),self.createtoline)
-=======
+
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
->>>>>>> refs/remotes/origin/master
       
         
        
@@ -84,43 +81,52 @@ class TellusProcessingDialog(QDialog):
     def createtoline(self):
         
         filename = self.ui.pathLineEdit.text()
-        
+
         seg = survey_reader(filename)
+        
         rad_img = radargram(seg.get_traces())
-        rad_sample  = rad_img.read_trace([0,-1,10])
-        gps_sample  = rad_img.read_position_meter([0,-1,10])
+        
+        rad_sample  = rad_img.read_trace([0,-1,2000])
+        
+        gps_sample  = rad_img.read_position([0,-1,2000])
+        
+        
         test = rad_sample.T
-        valeurs = [""]*len(test)
+        
         points = [""]*len(test)
-     
+        
         for i in range(len(test)):
-            x = gps_sample[1][i]
-            y = gps_sample[0][i]
-    
-            # Add a new feature and assign the geometry
-            feat = QgsFeature()
-            feat.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-            prov.addFeatures([feat])
+            # Specify the geometry type
+            layer = QgsVectorLayer('Point?crs=epsg:4326', 'point' , 'memory')
+             
+            # Set the provider to accept the data source
+            prov = layer.dataProvider()
+        
+            for i in range(len(test)):
+                x = gps_sample[1][i]
+                y = gps_sample[0][i]
+        
+        
+                # Add a new feature and assign the geometry
+                feat = QgsFeature()
+                feat.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+                prov.addFeatures([feat])
+                    
+                points[i] = QgsPoint(x,y)
+        
+        # Specify the geometry type
+        layer = QgsVectorLayer('LineString?crs=epsg:4326', 'line' , 'memory')
          
-            # Update extent of the layer
-            layer.updateExtents()
-    
-            points = [QgsPoint(x,y)]
-    
-     
-    # Specify the geometry type
-    layer = QgsVectorLayer('LineString?crs=epsg:4326', 'line' , 'memory')
-     
-    # Set the provider to&nbsp;accept the data source
-    prov = layer.dataProvider()
-     
-    # Add a new feature and assign the geometry
-    feat = QgsFeature()
-    feat.setGeometry(QgsGeometry.fromPolyline(points))
-    prov.addFeatures([feat])
-     
-    # Update extent of the layer
-    layer.updateExtents()
-     
-    # Add the layer to the Layers panel
-    QgsMapLayerRegistry.instance().addMapLayers([layer])
+        # Set the provider to&nbsp;accept the data source
+        prov = layer.dataProvider()
+         
+        # Add a new feature and assign the geometry
+        feat = QgsFeature()
+        feat.setGeometry(QgsGeometry.fromPolyline(points))
+        prov.addFeatures([feat])
+         
+        # Update extent of the layer
+        layer.updateExtents()
+         
+        # Add the layer to the Layers panel
+        QgsMapLayerRegistry.instance().addMapLayers([layer])
