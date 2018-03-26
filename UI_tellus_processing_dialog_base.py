@@ -95,33 +95,3 @@ if __name__ == "__main__":
     ui.setupUi(TellusProcessingDialogBase)
     TellusProcessingDialogBase.show()
     sys.exit(app.exec_())
-
-def createtocsv(filename):
-
-    seg = survey_reader(filename)
-    rad_img = radargram(seg.get_traces())
-    rad_sample  = rad_img.read_trace([0,-1,10]) 
-    gps_sample  = rad_img.read_position_meter([0,-1,10])
-    test = rad_sample.T
-    valeurs = [""]*len(test)
-
-    for i in range(len(test)):
-        print(i)
-        valeurs[i]= [i,gps_sample[1][i], gps_sample[0][i], gps_sample[2][i], test[i]]
-
-    entetes = [
-        u'Trace',
-        u'X',
-        u'Y',
-        u'Z',
-        u'Valeurs',
-        ]
-
-
-    f = open('DAT_0001.csv', 'w')
-    ligneEntete = ";".join(entetes) + "\n"
-    writer = csv.writer(f, delimiter=";")
-    f.write(ligneEntete)    
-    writer.writerows(valeurs)
-
-    f.close()
