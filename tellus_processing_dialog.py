@@ -85,6 +85,7 @@ class TellusProcessingDialog(QDialog):
         test = rad_sample.T
         valeurs = [""]*len(test)
      
+     
         for i in range(len(test)):
             print(i)
             valeurs[i]= [i,gps_sample[1][i], gps_sample[0][i], gps_sample[2][i]]
