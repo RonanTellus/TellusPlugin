@@ -55,7 +55,11 @@ class TellusProcessingDialog(QDialog):
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
+<<<<<<< HEAD
         self.connect(self.ui.buttonLancer,SIGNAL("clicked()"),self.createtoline)
+=======
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
+>>>>>>> refs/remotes/origin/master
       
         
        

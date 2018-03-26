@@ -26,7 +26,7 @@
     <string>Dossier</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="lblSourceType">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -71,7 +71,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="lblDistPoints">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -130,7 +130,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="lblSource">
     <property name="geometry">
      <rect>
       <x>10</x>

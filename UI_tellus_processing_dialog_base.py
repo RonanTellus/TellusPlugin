@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_tellus_processing_dialog_base.ui'
 #
-# Created: Mon Mar 26 14:33:52 2018
+# Created: Mon Mar 26 15:41:23 2018
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,9 +30,9 @@ class Ui_TellusProcessingDialogBase(object):
         self.radioButtonDossier = QtGui.QRadioButton(TellusProcessingDialogBase)
         self.radioButtonDossier.setGeometry(QtCore.QRect(170, 40, 117, 22))
         self.radioButtonDossier.setObjectName(_fromUtf8("radioButtonDossier"))
-        self.label_3 = QtGui.QLabel(TellusProcessingDialogBase)
-        self.label_3.setGeometry(QtCore.QRect(30, 15, 101, 17))
-        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.lblSourceType = QtGui.QLabel(TellusProcessingDialogBase)
+        self.lblSourceType.setGeometry(QtCore.QRect(30, 15, 101, 17))
+        self.lblSourceType.setObjectName(_fromUtf8("lblSourceType"))
         self.radioButtonFichier = QtGui.QRadioButton(TellusProcessingDialogBase)
         self.radioButtonFichier.setGeometry(QtCore.QRect(50, 40, 117, 22))
         self.radioButtonFichier.setObjectName(_fromUtf8("radioButtonFichier"))
@@ -42,9 +42,9 @@ class Ui_TellusProcessingDialogBase(object):
         self.sbParamDistance = QtGui.QSpinBox(self.distance)
         self.sbParamDistance.setGeometry(QtCore.QRect(230, 10, 51, 31))
         self.sbParamDistance.setObjectName(_fromUtf8("sbParamDistance"))
-        self.label = QtGui.QLabel(self.distance)
-        self.label.setGeometry(QtCore.QRect(20, 10, 221, 31))
-        self.label.setObjectName(_fromUtf8("label"))
+        self.lblDistPoints = QtGui.QLabel(self.distance)
+        self.lblDistPoints.setGeometry(QtCore.QRect(20, 10, 221, 31))
+        self.lblDistPoints.setObjectName(_fromUtf8("lblDistPoints"))
         self.source = QtGui.QWidget(TellusProcessingDialogBase)
         self.source.setGeometry(QtCore.QRect(20, 95, 511, 61))
         self.source.setObjectName(_fromUtf8("source"))
@@ -57,9 +57,9 @@ class Ui_TellusProcessingDialogBase(object):
         self.pathLineEdit = QtGui.QLineEdit(self.source)
         self.pathLineEdit.setGeometry(QtCore.QRect(160, 20, 261, 31))
         self.pathLineEdit.setObjectName(_fromUtf8("pathLineEdit"))
-        self.label_2 = QtGui.QLabel(self.source)
-        self.label_2.setGeometry(QtCore.QRect(10, 0, 71, 17))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.lblSource = QtGui.QLabel(self.source)
+        self.lblSource.setGeometry(QtCore.QRect(10, 0, 71, 17))
+        self.lblSource.setObjectName(_fromUtf8("lblSource"))
         self.radioButtonDatabase = QtGui.QRadioButton(TellusProcessingDialogBase)
         self.radioButtonDatabase.setGeometry(QtCore.QRect(290, 40, 117, 22))
         self.radioButtonDatabase.setObjectName(_fromUtf8("radioButtonDatabase"))
@@ -76,12 +76,12 @@ class Ui_TellusProcessingDialogBase(object):
     def retranslateUi(self, TellusProcessingDialogBase):
         TellusProcessingDialogBase.setWindowTitle(_translate("TellusProcessingDialogBase", "Tellus processing", None))
         self.radioButtonDossier.setText(_translate("TellusProcessingDialogBase", "Dossier", None))
-        self.label_3.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source type</span></p></body></html>", None))
+        self.lblSourceType.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source type</span></p></body></html>", None))
         self.radioButtonFichier.setText(_translate("TellusProcessingDialogBase", "Fichier", None))
-        self.label.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
+        self.lblDistPoints.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
         self.parcourirBtn.setText(_translate("TellusProcessingDialogBase", "Parcourir", None))
         self.lblDG.setText(_translate("TellusProcessingDialogBase", "Données géoradar", None))
-        self.label_2.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source</span></p></body></html>", None))
+        self.lblSource.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source</span></p></body></html>", None))
         self.radioButtonDatabase.setText(_translate("TellusProcessingDialogBase", "Database", None))
         self.buttonLancer.setText(_translate("TellusProcessingDialogBase", "Lancer", None))
         self.buttonAnnuler.setText(_translate("TellusProcessingDialogBase", "Annuler", None))
@@ -96,32 +96,3 @@ if __name__ == "__main__":
     TellusProcessingDialogBase.show()
     sys.exit(app.exec_())
 
-def createtocsv(filename):
-
-    seg = survey_reader(filename)
-    rad_img = radargram(seg.get_traces())
-    rad_sample  = rad_img.read_trace([0,-1,10]) 
-    gps_sample  = rad_img.read_position_meter([0,-1,10])
-    test = rad_sample.T
-    valeurs = [""]*len(test)
-
-    for i in range(len(test)):
-        print(i)
-        valeurs[i]= [i,gps_sample[1][i], gps_sample[0][i], gps_sample[2][i], test[i]]
-
-    entetes = [
-        u'Trace',
-        u'X',
-        u'Y',
-        u'Z',
-        u'Valeurs',
-        ]
-
-
-    f = open('DAT_0001.csv', 'w')
-    ligneEntete = ";".join(entetes) + "\n"
-    writer = csv.writer(f, delimiter=";")
-    f.write(ligneEntete)    
-    writer.writerows(valeurs)
-
-    f.close()
