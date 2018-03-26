@@ -24,6 +24,8 @@
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from qgis.utils import iface
+
 
 from qgis import *
 from qgis.core import *
@@ -80,9 +82,11 @@ class TellusProcessingDialog(QDialog):
     
     def createtoline(self):
         
-        filename = self.ui.pathLineEdit.text()
+        file = self.ui.pathLineEdit.text()
 
-        seg = survey_reader(filename)
+        filename = os.path.splitext(os.path.basename(file))[0]
+
+        seg = survey_reader(file)
         
         rad_img = radargram(seg.get_traces())
         
@@ -115,7 +119,7 @@ class TellusProcessingDialog(QDialog):
                 points[i] = QgsPoint(x,y)
         
         # Specify the geometry type
-        layer = QgsVectorLayer('LineString?crs=epsg:4326', 'line' , 'memory')
+        layer = QgsVectorLayer('LineString?crs=epsg:4326', filename , 'memory')
          
         # Set the provider to&nbsp;accept the data source
         prov = layer.dataProvider()
