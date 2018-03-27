@@ -54,13 +54,20 @@ class TellusProcessingDialog(QDialog):
         # self.<objectname>, and you can use autoconnect slots - see
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
+
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
-      
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
+
+        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
+
+        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
+
+        self.setWindowTitle("Lecteur SEG-Y")
         
+
        
     def inFile(self):
         """Opens an open file dialog"""  
@@ -89,10 +96,13 @@ class TellusProcessingDialog(QDialog):
         seg = survey_reader(file)
         
         rad_img = radargram(seg.get_traces())
+
+        trace = self.ui.sbParamTraces.text()
+
         
-        rad_sample  = rad_img.read_trace([0,-1,2000])
+        rad_sample  = rad_img.read_trace([0,-1,int(float(trace))])
         
-        gps_sample  = rad_img.read_position([0,-1,2000])
+        gps_sample  = rad_img.read_position([0,-1,int(float(trace))])
         
         
         test = rad_sample.T
@@ -115,6 +125,9 @@ class TellusProcessingDialog(QDialog):
                 feat = QgsFeature()
                 feat.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
                 prov.addFeatures([feat])
+
+                # Update extent of the layer
+                layer.updateExtents()
                     
                 points[i] = QgsPoint(x,y)
         
@@ -134,3 +147,8 @@ class TellusProcessingDialog(QDialog):
          
         # Add the layer to the Layers panel
         QgsMapLayerRegistry.instance().addMapLayers([layer])
+
+
+dialog = TellusProcessingDialog()
+if dialog.exec_() == QDialog.Accepted:
+    dialog.createtoline()

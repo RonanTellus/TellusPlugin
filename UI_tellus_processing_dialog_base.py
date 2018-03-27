@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_tellus_processing_dialog_base.ui'
 #
-# Created: Mon Mar 26 15:41:23 2018
-#      by: PyQt4 UI code generator 4.10.4
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,27 +25,18 @@ except AttributeError:
 class Ui_TellusProcessingDialogBase(object):
     def setupUi(self, TellusProcessingDialogBase):
         TellusProcessingDialogBase.setObjectName(_fromUtf8("TellusProcessingDialogBase"))
-        TellusProcessingDialogBase.resize(552, 281)
-        self.radioButtonDossier = QtGui.QRadioButton(TellusProcessingDialogBase)
-        self.radioButtonDossier.setGeometry(QtCore.QRect(170, 40, 117, 22))
-        self.radioButtonDossier.setObjectName(_fromUtf8("radioButtonDossier"))
-        self.lblSourceType = QtGui.QLabel(TellusProcessingDialogBase)
-        self.lblSourceType.setGeometry(QtCore.QRect(30, 15, 101, 17))
-        self.lblSourceType.setObjectName(_fromUtf8("lblSourceType"))
-        self.radioButtonFichier = QtGui.QRadioButton(TellusProcessingDialogBase)
-        self.radioButtonFichier.setGeometry(QtCore.QRect(50, 40, 117, 22))
-        self.radioButtonFichier.setObjectName(_fromUtf8("radioButtonFichier"))
+        TellusProcessingDialogBase.resize(552, 254)
         self.distance = QtGui.QWidget(TellusProcessingDialogBase)
-        self.distance.setGeometry(QtCore.QRect(20, 165, 511, 51))
+        self.distance.setGeometry(QtCore.QRect(20, 90, 511, 51))
         self.distance.setObjectName(_fromUtf8("distance"))
-        self.sbParamDistance = QtGui.QSpinBox(self.distance)
-        self.sbParamDistance.setGeometry(QtCore.QRect(230, 10, 51, 31))
-        self.sbParamDistance.setObjectName(_fromUtf8("sbParamDistance"))
-        self.lblDistPoints = QtGui.QLabel(self.distance)
-        self.lblDistPoints.setGeometry(QtCore.QRect(20, 10, 221, 31))
-        self.lblDistPoints.setObjectName(_fromUtf8("lblDistPoints"))
+        self.lblNbTraces = QtGui.QLabel(self.distance)
+        self.lblNbTraces.setGeometry(QtCore.QRect(30, 10, 61, 31))
+        self.lblNbTraces.setObjectName(_fromUtf8("lblNbTraces"))
+        self.sbParamTraces = QtGui.QLineEdit(self.distance)
+        self.sbParamTraces.setGeometry(QtCore.QRect(80, 10, 113, 27))
+        self.sbParamTraces.setObjectName(_fromUtf8("sbParamTraces"))
         self.source = QtGui.QWidget(TellusProcessingDialogBase)
-        self.source.setGeometry(QtCore.QRect(20, 95, 511, 61))
+        self.source.setGeometry(QtCore.QRect(20, 20, 511, 61))
         self.source.setObjectName(_fromUtf8("source"))
         self.parcourirBtn = QtGui.QPushButton(self.source)
         self.parcourirBtn.setGeometry(QtCore.QRect(430, 20, 80, 31))
@@ -60,39 +50,32 @@ class Ui_TellusProcessingDialogBase(object):
         self.lblSource = QtGui.QLabel(self.source)
         self.lblSource.setGeometry(QtCore.QRect(10, 0, 71, 17))
         self.lblSource.setObjectName(_fromUtf8("lblSource"))
-        self.radioButtonDatabase = QtGui.QRadioButton(TellusProcessingDialogBase)
-        self.radioButtonDatabase.setGeometry(QtCore.QRect(290, 40, 117, 22))
-        self.radioButtonDatabase.setObjectName(_fromUtf8("radioButtonDatabase"))
         self.buttonLancer = QtGui.QPushButton(TellusProcessingDialogBase)
-        self.buttonLancer.setGeometry(QtCore.QRect(360, 250, 80, 16))
+        self.buttonLancer.setGeometry(QtCore.QRect(450, 210, 80, 31))
         self.buttonLancer.setObjectName(_fromUtf8("buttonLancer"))
         self.buttonAnnuler = QtGui.QPushButton(TellusProcessingDialogBase)
-        self.buttonAnnuler.setGeometry(QtCore.QRect(450, 250, 80, 16))
+        self.buttonAnnuler.setGeometry(QtCore.QRect(360, 210, 80, 31))
         self.buttonAnnuler.setObjectName(_fromUtf8("buttonAnnuler"))
+        self.widget = QtGui.QWidget(TellusProcessingDialogBase)
+        self.widget.setGeometry(QtCore.QRect(20, 150, 511, 51))
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.lblDistance = QtGui.QLabel(self.widget)
+        self.lblDistance.setGeometry(QtCore.QRect(30, 10, 221, 31))
+        self.lblDistance.setObjectName(_fromUtf8("lblDistance"))
+        self.sbParamDistance = QtGui.QLineEdit(self.widget)
+        self.sbParamDistance.setGeometry(QtCore.QRect(240, 10, 113, 27))
+        self.sbParamDistance.setObjectName(_fromUtf8("sbParamDistance"))
 
         self.retranslateUi(TellusProcessingDialogBase)
         QtCore.QMetaObject.connectSlotsByName(TellusProcessingDialogBase)
 
     def retranslateUi(self, TellusProcessingDialogBase):
         TellusProcessingDialogBase.setWindowTitle(_translate("TellusProcessingDialogBase", "Tellus processing", None))
-        self.radioButtonDossier.setText(_translate("TellusProcessingDialogBase", "Dossier", None))
-        self.lblSourceType.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source type</span></p></body></html>", None))
-        self.radioButtonFichier.setText(_translate("TellusProcessingDialogBase", "Fichier", None))
-        self.lblDistPoints.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
+        self.lblNbTraces.setText(_translate("TellusProcessingDialogBase", "Traces", None))
         self.parcourirBtn.setText(_translate("TellusProcessingDialogBase", "Parcourir", None))
         self.lblDG.setText(_translate("TellusProcessingDialogBase", "Données géoradar", None))
         self.lblSource.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source</span></p></body></html>", None))
-        self.radioButtonDatabase.setText(_translate("TellusProcessingDialogBase", "Database", None))
         self.buttonLancer.setText(_translate("TellusProcessingDialogBase", "Lancer", None))
         self.buttonAnnuler.setText(_translate("TellusProcessingDialogBase", "Annuler", None))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    TellusProcessingDialogBase = QtGui.QDialog()
-    ui = Ui_TellusProcessingDialogBase()
-    ui.setupUi(TellusProcessingDialogBase)
-    TellusProcessingDialogBase.show()
-    sys.exit(app.exec_())
+        self.lblDistance.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
 
