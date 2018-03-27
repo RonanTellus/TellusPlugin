@@ -63,8 +63,6 @@ class TellusProcessingDialog(QDialog):
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
 
-        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
-
         self.setWindowTitle("Lecteur SEG-Y")
         
 
@@ -99,10 +97,11 @@ class TellusProcessingDialog(QDialog):
 
         trace = self.ui.sbParamTraces.text()
 
+        interval = seg.nb_traces // int(float(trace))
         
-        rad_sample  = rad_img.read_trace([0,-1,int(float(trace))])
+        rad_sample  = rad_img.read_trace([0,-1,int(float(interval))])
         
-        gps_sample  = rad_img.read_position([0,-1,int(float(trace))])
+        gps_sample  = rad_img.read_position([0,-1,int(float(interval))])
         
         
         test = rad_sample.T
@@ -119,8 +118,7 @@ class TellusProcessingDialog(QDialog):
             for i in range(len(test)):
                 x = gps_sample[1][i]
                 y = gps_sample[0][i]
-        
-        
+
                 # Add a new feature and assign the geometry
                 feat = QgsFeature()
                 feat.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
@@ -128,7 +126,7 @@ class TellusProcessingDialog(QDialog):
 
                 # Update extent of the layer
                 layer.updateExtents()
-                    
+                        
                 points[i] = QgsPoint(x,y)
         
         # Specify the geometry type
