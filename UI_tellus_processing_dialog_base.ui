@@ -150,7 +150,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Distance entre chaque points</string>
+     <string>Distance entre chaque points (en cm)</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="sbParamDistance">

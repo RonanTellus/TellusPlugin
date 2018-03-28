@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_tellus_processing_dialog_base.ui'
 #
-# Created: Wed Mar 28 14:33:43 2018
+# Created: Wed Mar 28 15:56:32 2018
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,7 +78,7 @@ class Ui_TellusProcessingDialogBase(object):
         self.lblSource.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source</span></p></body></html>", None))
         self.buttonLancer.setText(_translate("TellusProcessingDialogBase", "Lancer", None))
         self.buttonAnnuler.setText(_translate("TellusProcessingDialogBase", "Annuler", None))
-        self.lblDistance.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points", None))
+        self.lblDistance.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points (en cm)", None))
 
 
 if __name__ == "__main__":
