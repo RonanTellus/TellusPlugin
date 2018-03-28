@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Tellus processing</string>
   </property>
-  <widget class="QWidget" name="distance" native="true">
+  <widget class="QWidget" name="traces" native="true">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -131,7 +131,7 @@
     <string>Annuler</string>
    </property>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
+  <widget class="QWidget" name="distance" native="true">
    <property name="geometry">
     <rect>
      <x>20</x>
