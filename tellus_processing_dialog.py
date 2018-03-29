@@ -94,10 +94,12 @@ class TellusProcessingDialog(QDialog):
         filename = os.path.splitext(os.path.basename(file))[0]
 
         seg = survey_reader(file)
-
-        distance = self.ui.sbParamDistance.text()        
-       
+        
+        distance = self.ui.sbParamDistance.text()
+            
         d = float(distance)/100
+        
+        a = 0.15
         
         rad_img = radargram(seg.get_traces())
 
@@ -106,7 +108,7 @@ class TellusProcessingDialog(QDialog):
         rad_metre  = rad_img.read_position_meter([0,-1,nbTraces])
         
         gps_sample  = rad_img.read_position([0,-1,1])
-        
+
         xm = []
         ym = []
         xm.append(gps_sample[1][0]) 
@@ -129,6 +131,9 @@ class TellusProcessingDialog(QDialog):
         for i in range(len(xm)):
             if gps_sample[0][i] != 0 and gps_sample[1][i] != 0:
                 valeurs[i]= [xm[i], ym[i]]
+
+
+
 
 
         entetes = [
@@ -182,5 +187,3 @@ class TellusProcessingDialog(QDialog):
                              filename, "ogr")
 
         os.remove(Input_Table)
-
-    
