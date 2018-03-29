@@ -60,9 +60,11 @@ class TellusProcessingDialog(QDialog):
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept) 
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
+       
 
         self.setWindowTitle("Lecteur SEG-Y")
         
@@ -186,9 +188,3 @@ class TellusProcessingDialog(QDialog):
                              filename, "ogr")
 
         os.remove(Input_Table)
-
-
-dialog = TellusProcessingDialog()
-if dialog.exec_() == QDialog.Accepted:
-    dialog.createtoline()
-    
