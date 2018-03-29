@@ -106,7 +106,7 @@ class TellusProcessingDialog(QDialog):
         
         rad_metre  = rad_img.read_position_meter([0,-1,nbTraces])
         
-        gps_sample  = rad_img.read_position([0,-1,nbTraces])
+        gps_sample  = rad_img.read_position([0,-1,1])
 
         xm = []
         ym = []
@@ -125,45 +125,67 @@ class TellusProcessingDialog(QDialog):
     
         #test = rad_sample.T
     
-        points = [""]*len(xm)
-        
+        valeurs = [""]*len(xm)
+
         for i in range(len(xm)):
-            # Specify the geometry type
-            layer = QgsVectorLayer('Point?crs=epsg:4326', 'point' , 'memory')
-             
-            # Set the provider to accept the data source
-            prov = layer.dataProvider()
-        
-            for i in range(len(xm)):
-                x = xm[i]
-                y = ym[i]
+            if gps_sample[0][i] != 0 and gps_sample[1][i] != 0:
+                valeurs[i]= [xm[i], ym[i]]
 
-                # Add a new feature and assign the geometry
-                feat = QgsFeature()
-                feat.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-                prov.addFeatures([feat])
 
-                # Update extent of the layer
-                layer.updateExtents()
-                        
-                points[i] = QgsPoint(x,y)
-        
-        # Specify the geometry type
-        layer = QgsVectorLayer('LineString?crs=epsg:4326', filename , 'memory')
+
+
+
+        entetes = [
+             u'X',
+             u'Y',
+        ]
+
+        #valeurs = [
+        #
+        #     [gps_sample[0][0], gps_sample[1][0], gps_sample[2][0], test[0]],
+        #     [u'Valeur6', u'Valeur7', u'Valeur8', u'Valeur9', u'Valeur10'],
+        #     [u'Valeur11', u'Valeur12', u'Valeur13', u'Valeur14', u'Valeur15']
+        #]
+
+
+        f = open(file[:-3]+"csv", 'w')
+        ligneEntete = ";".join(entetes) + "\n"
+        writer = csv.writer(f, delimiter=";")
+        f.write(ligneEntete)    
+        writer.writerows(valeurs)
+
+        f.close()
+
+
+        Input_Table = file[:-3]+"csv"  # set the filepath for the input CSV
+        lon_field = 'x' # set the name for the field containing the longitude
+        lat_field = 'y' # set the name for the field containing the latitude
+        crs = 4326 # set the crs as needed
+        Output_Layer = file[:-3]+"shp" # set the filepath for the output shapefile
          
-        # Set the provider to&nbsp;accept the data source
-        prov = layer.dataProvider()
+        spatRef = QgsCoordinateReferenceSystem(crs, QgsCoordinateReferenceSystem.EpsgCrsId)
          
-        # Add a new feature and assign the geometry
-        feat = QgsFeature()
-        feat.setGeometry(QgsGeometry.fromPolyline(points))
-        prov.addFeatures([feat])
+        inp_tab = QgsVectorLayer(Input_Table, 'Input_Table', 'ogr')
+        prov = inp_tab.dataProvider()
+        fields = inp_tab.pendingFields()
+        outLayer = QgsVectorFileWriter(Output_Layer, None, fields, QGis.WKBPoint, spatRef)
          
-        # Update extent of the layer
-        layer.updateExtents()
+        pt = QgsPoint()
+        outFeature = QgsFeature()
          
-        # Add the layer to the Layers panel
-        QgsMapLayerRegistry.instance().addMapLayers([layer])
+        for feat in inp_tab.getFeatures():
+            attrs = feat.attributes()
+            pt.setX(float(feat[lon_field]))
+            pt.setY(float(feat[lat_field]))
+            outFeature.setAttributes(attrs)
+            outFeature.setGeometry(QgsGeometry.fromPoint(pt))
+            outLayer.addFeature(outFeature)
+        del outLayer
+
+        layer = iface.addVectorLayer(Output_Layer, 
+                             filename, "ogr")
+
+        os.remove(Input_Table)
 
 
 dialog = TellusProcessingDialog()
