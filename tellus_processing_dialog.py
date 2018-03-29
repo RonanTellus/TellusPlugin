@@ -85,7 +85,7 @@ class TellusProcessingDialog(QDialog):
             
         self.ui.pathLineEdit.setText(inFilePath)   
     
-    def createtoline(self):
+def createtoline(self):
         
         file = self.ui.pathLineEdit.text()
 
@@ -93,31 +93,49 @@ class TellusProcessingDialog(QDialog):
 
         seg = survey_reader(file)
         
+        distance = self.ui.sbParamDistance.text()
+            
+        d = float(distance)/100
+        
+        a = 0.15
+        
         rad_img = radargram(seg.get_traces())
 
-        trace = self.ui.sbParamTraces.text()
+       
+        
+        rad_metre  = rad_img.read_position_meter([0,-1,1])
+        
+        gps_sample  = rad_img.read_position([0,-1,1])
 
-        interval = seg.nb_traces // int(float(trace))
+        xm = []
+        ym = []
+        xm.append(gps_sample[1][0]) 
+        ym.append(gps_sample[0][0])
+        xc =  float(rad_metre[1][0])
+        yc = float(rad_metre[0][0])
+        for i in range(len(rad_metre[0])):
+            if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
+                dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2),4))
+                if dista >= d:
+                    xm.append(gps_sample[1][i])
+                    ym.append(gps_sample[0][i])
+                    xc =  float(rad_metre[1][i])
+                    yc = float(rad_metre[0][i])
+    
+        #test = rad_sample.T
+    
+        points = [""]*len(xm)
         
-        rad_sample  = rad_img.read_trace([0,-1,int(float(interval))])
-        
-        gps_sample  = rad_img.read_position([0,-1,int(float(interval))])
-        
-        
-        test = rad_sample.T
-        
-        points = [""]*len(test)
-        
-        for i in range(len(test)):
+        for i in range(len(xm)):
             # Specify the geometry type
             layer = QgsVectorLayer('Point?crs=epsg:4326', 'point' , 'memory')
              
             # Set the provider to accept the data source
             prov = layer.dataProvider()
         
-            for i in range(len(test)):
-                x = gps_sample[1][i]
-                y = gps_sample[0][i]
+            for i in range(len(xm)):
+                x = xm[i]
+                y = ym[i]
 
                 # Add a new feature and assign the geometry
                 feat = QgsFeature()
@@ -150,3 +168,4 @@ class TellusProcessingDialog(QDialog):
 dialog = TellusProcessingDialog()
 if dialog.exec_() == QDialog.Accepted:
     dialog.createtoline()
+    
