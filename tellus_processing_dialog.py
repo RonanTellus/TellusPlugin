@@ -42,6 +42,7 @@ import resources
 import os
 from os.path import dirname
 from PyQt4 import QtGui
+from math import sqrt
 
 from qgis.core import QGis, QgsFeatureRequest, QgsFeature, QgsGeometry, QgsWKBTypes
 
@@ -85,7 +86,7 @@ class TellusProcessingDialog(QDialog):
             
         self.ui.pathLineEdit.setText(inFilePath)   
     
-def createtoline(self):
+    def createtoline(self):
         
         file = self.ui.pathLineEdit.text()
 
