@@ -106,7 +106,7 @@ class TellusProcessingDialog(QDialog):
         rad_metre  = rad_img.read_position_meter([0,-1,nbTraces])
         
         gps_sample  = rad_img.read_position([0,-1,1])
-
+        
         xm = []
         ym = []
         xm.append(gps_sample[1][0]) 
