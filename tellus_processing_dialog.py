@@ -61,6 +61,7 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
 
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline())
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
 
@@ -187,8 +188,4 @@ class TellusProcessingDialog(QDialog):
 
         os.remove(Input_Table)
 
-
-dialog = TellusProcessingDialog()
-if dialog.exec_() == QDialog.Accepted:
-    dialog.createtoline()
     
