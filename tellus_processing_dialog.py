@@ -93,12 +93,10 @@ class TellusProcessingDialog(QDialog):
         filename = os.path.splitext(os.path.basename(file))[0]
 
         seg = survey_reader(file)
-        
-        distance = self.ui.sbParamDistance.text()
-            
+
+        distance = self.ui.sbParamDistance.text()        
+       
         d = float(distance)/100
-        
-        a = 0.15
         
         rad_img = radargram(seg.get_traces())
 
