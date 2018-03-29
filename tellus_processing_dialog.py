@@ -130,9 +130,6 @@ class TellusProcessingDialog(QDialog):
                 valeurs[i]= [xm[i], ym[i]]
 
 
-
-
-
         entetes = [
              u'X',
              u'Y',
