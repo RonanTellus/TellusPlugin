@@ -61,7 +61,6 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
 
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline())
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
 
@@ -94,11 +93,11 @@ class TellusProcessingDialog(QDialog):
         filename = os.path.splitext(os.path.basename(file))[0]
 
         seg = survey_reader(file)
-        
-        distance = self.ui.sbParamDistance.text()
-            
+
+        distance = self.ui.sbParamDistance.text()        
+       
         d = float(distance)/100
-        
+      
         a = 0.15
         
         rad_img = radargram(seg.get_traces())
@@ -187,3 +186,9 @@ class TellusProcessingDialog(QDialog):
                              filename, "ogr")
 
         os.remove(Input_Table)
+
+
+dialog = TellusProcessingDialog()
+if dialog.exec_() == QDialog.Accepted:
+    dialog.createtoline()
+    
