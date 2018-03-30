@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_tellus_processing_dialog_base.ui'
 #
-# Created: Wed Mar 28 15:56:32 2018
+# Created: Fri Mar 30 13:26:47 2018
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,29 +28,29 @@ class Ui_TellusProcessingDialogBase(object):
         TellusProcessingDialogBase.setObjectName(_fromUtf8("TellusProcessingDialogBase"))
         TellusProcessingDialogBase.resize(552, 254)
         self.traces = QtGui.QWidget(TellusProcessingDialogBase)
-        self.traces.setGeometry(QtCore.QRect(20, 90, 511, 51))
+        self.traces.setGeometry(QtCore.QRect(20, 80, 511, 61))
         self.traces.setObjectName(_fromUtf8("traces"))
-        self.lblNbTraces = QtGui.QLabel(self.traces)
-        self.lblNbTraces.setGeometry(QtCore.QRect(30, 10, 61, 31))
-        self.lblNbTraces.setObjectName(_fromUtf8("lblNbTraces"))
-        self.sbParamTraces = QtGui.QLineEdit(self.traces)
-        self.sbParamTraces.setGeometry(QtCore.QRect(80, 10, 113, 27))
-        self.sbParamTraces.setObjectName(_fromUtf8("sbParamTraces"))
+        self.radBtnRadargramme = QtGui.QRadioButton(self.traces)
+        self.radBtnRadargramme.setEnabled(True)
+        self.radBtnRadargramme.setGeometry(QtCore.QRect(10, 10, 131, 20))
+        self.radBtnRadargramme.setObjectName(_fromUtf8("radBtnRadargramme"))
+        self.listWidget = QtGui.QListWidget(self.traces)
+        self.listWidget.setEnabled(False)
+        self.listWidget.setGeometry(QtCore.QRect(160, 0, 351, 61))
+        self.listWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        self.listWidget.setObjectName(_fromUtf8("listWidget"))
         self.source = QtGui.QWidget(TellusProcessingDialogBase)
         self.source.setGeometry(QtCore.QRect(20, 20, 511, 61))
         self.source.setObjectName(_fromUtf8("source"))
         self.parcourirBtn = QtGui.QPushButton(self.source)
-        self.parcourirBtn.setGeometry(QtCore.QRect(430, 20, 80, 31))
+        self.parcourirBtn.setGeometry(QtCore.QRect(430, 0, 80, 31))
         self.parcourirBtn.setObjectName(_fromUtf8("parcourirBtn"))
         self.lblDG = QtGui.QLabel(self.source)
-        self.lblDG.setGeometry(QtCore.QRect(30, 20, 131, 31))
+        self.lblDG.setGeometry(QtCore.QRect(30, 0, 131, 31))
         self.lblDG.setObjectName(_fromUtf8("lblDG"))
         self.pathLineEdit = QtGui.QLineEdit(self.source)
-        self.pathLineEdit.setGeometry(QtCore.QRect(160, 20, 261, 31))
+        self.pathLineEdit.setGeometry(QtCore.QRect(160, 0, 261, 31))
         self.pathLineEdit.setObjectName(_fromUtf8("pathLineEdit"))
-        self.lblSource = QtGui.QLabel(self.source)
-        self.lblSource.setGeometry(QtCore.QRect(10, 0, 71, 17))
-        self.lblSource.setObjectName(_fromUtf8("lblSource"))
         self.buttonLancer = QtGui.QPushButton(TellusProcessingDialogBase)
         self.buttonLancer.setGeometry(QtCore.QRect(450, 210, 80, 31))
         self.buttonLancer.setObjectName(_fromUtf8("buttonLancer"))
@@ -72,10 +72,9 @@ class Ui_TellusProcessingDialogBase(object):
 
     def retranslateUi(self, TellusProcessingDialogBase):
         TellusProcessingDialogBase.setWindowTitle(_translate("TellusProcessingDialogBase", "Tellus processing", None))
-        self.lblNbTraces.setText(_translate("TellusProcessingDialogBase", "Traces", None))
+        self.radBtnRadargramme.setText(_translate("TellusProcessingDialogBase", "Affichage radargramme", None))
         self.parcourirBtn.setText(_translate("TellusProcessingDialogBase", "Parcourir", None))
         self.lblDG.setText(_translate("TellusProcessingDialogBase", "Données géoradar", None))
-        self.lblSource.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><span style=\" font-weight:600;\">Source</span></p></body></html>", None))
         self.buttonLancer.setText(_translate("TellusProcessingDialogBase", "Lancer", None))
         self.buttonAnnuler.setText(_translate("TellusProcessingDialogBase", "Annuler", None))
         self.lblDistance.setText(_translate("TellusProcessingDialogBase", "Distance entre chaque points (en cm)", None))

@@ -124,7 +124,7 @@ class TellusProcessingDialog(QDialog):
         rad_metre  = rad_img.read_position_meter([0,-1,1])
         
         gps_sample  = rad_img.read_position([0,-1,1])
-
+        #Prend en compte le paramère distance renseigné en cm dans le plugin afin de mettre en mémoire les point avec une distance égale à (cm) entre deux points
         xm = []
         ym = []
         zm = []
@@ -154,7 +154,7 @@ class TellusProcessingDialog(QDialog):
         prov = layer.dataProvider()
      
 
-       
+       #{↓AJout des points en memoire à partir de la distance renseigné en (cm)
         for i in range(len(xm)):
             x = xm[i]
             y = ym[i]

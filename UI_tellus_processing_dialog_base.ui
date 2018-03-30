@@ -17,32 +17,41 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>90</y>
+     <y>80</y>
      <width>511</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
-   <widget class="QLabel" name="lblNbTraces">
+   <widget class="QRadioButton" name="radBtnRadargramme">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>10</x>
       <y>10</y>
-      <width>61</width>
-      <height>31</height>
+      <width>131</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Traces</string>
+     <string>Affichage radargramme</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="sbParamTraces">
+   <widget class="QListWidget" name="listWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>10</y>
-      <width>113</width>
-      <height>27</height>
+      <x>160</x>
+      <y>0</y>
+      <width>351</width>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::MultiSelection</enum>
     </property>
    </widget>
   </widget>
@@ -59,7 +68,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>20</y>
+      <y>0</y>
       <width>80</width>
       <height>31</height>
      </rect>
@@ -72,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>20</y>
+      <y>0</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -85,23 +94,10 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>20</y>
+      <y>0</y>
       <width>261</width>
       <height>31</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="lblSource">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>71</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -164,6 +160,11 @@
     </property>
    </widget>
   </widget>
+  <zorder>distance</zorder>
+  <zorder>source</zorder>
+  <zorder>traces</zorder>
+  <zorder>buttonLancer</zorder>
+  <zorder>buttonAnnuler</zorder>
  </widget>
  <resources/>
  <connections/>
