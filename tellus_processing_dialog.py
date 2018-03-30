@@ -33,10 +33,9 @@ from qgis.gui import *
 from UI_tellus_processing_dialog_base import Ui_TellusProcessingDialogBase
 
 from survey_reader import survey_reader
-from radar_tools import *
+from radar_tools import radargram
 import matplotlib.pyplot as plt 
-import os 
-import csv
+
 
 import resources
 import os
@@ -44,7 +43,18 @@ from os.path import dirname
 from PyQt4 import QtGui
 from math import sqrt
 
-from qgis.core import QGis, QgsFeatureRequest, QgsFeature, QgsGeometry, QgsWKBTypes
+
+class Bar(QProgressBar):
+  value = 0  
+    
+  @pyqtSlot()
+  def increaseValue(self):    
+    self.setValue(self.value)
+    self.value = self.value+1
+
+bar = Bar()
+
+
 
 class TellusProcessingDialog(QDialog):
     def __init__(self):
@@ -64,7 +74,6 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
-       
 
         self.setWindowTitle("Lecteur SEG-Y")
         
@@ -86,9 +95,18 @@ class TellusProcessingDialog(QDialog):
             workDir = dirname(inFilePath)
             settings.setValue(key, workDir)      
             
-        self.ui.pathLineEdit.setText(inFilePath)   
+        self.ui.pathLineEdit.setText(inFilePath) 
+
+        # Pushing widgets to the message bar
+
+
+
+ 
     
     def createtoline(self):
+
+        bar =  Bar()
+        iface.messageBar().pushWidget(bar, QgsMessageBar.INFO, 1) 
         
         file = self.ui.pathLineEdit.text()
 
@@ -96,17 +114,16 @@ class TellusProcessingDialog(QDialog):
 
         seg = survey_reader(file)
 
-        distance = self.ui.sbParamDistance.text()        
-       
+        distance = self.ui.sbParamDistance.text()
+
         d = float(distance)/100
       
         a = 0.15
         
         rad_img = radargram(seg.get_traces())
 
-        nbTraces = int(self.ui.sbParamTraces.text())
         
-        rad_metre  = rad_img.read_position_meter([0,-1,nbTraces])
+        rad_metre  = rad_img.read_position_meter([0,-1,1])
         
         gps_sample  = rad_img.read_position([0,-1,1])
 
@@ -124,67 +141,32 @@ class TellusProcessingDialog(QDialog):
                     ym.append(gps_sample[0][i])
                     xc =  float(rad_metre[1][i])
                     yc = float(rad_metre[0][i])
-    
-        #test = rad_sample.T
-    
-        valeurs = [""]*len(xm)
+        
+        
+                        
+        # Specify the geometry type
+        layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', filename , 'memory')
+        
+        # Set the provider to accept the data source
+        prov = layer.dataProvider()
+     
 
-        for i in range(len(xm)):
-            if gps_sample[0][i] != 0 and gps_sample[1][i] != 0:
-                valeurs[i]= [xm[i], ym[i]]
+       
+        for i in range (int(seg.nb_traces)):
+            x = xm[i]
+            y = ym[i]
 
+           
+            if x != 0 and y!=0:
+                # add a feature
+                fet = QgsFeature()
+                fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+                fet.setAttributes([i,float(x), float(y)])
+                prov.addFeatures([fet])
 
+                # update layer's extent when new features have been added
+                # because change of extent in provider is not propagated to the layer
+                layer.updateExtents()
 
-
-
-        entetes = [
-             u'X',
-             u'Y',
-        ]
-
-        #valeurs = [
-        #
-        #     [gps_sample[0][0], gps_sample[1][0], gps_sample[2][0], test[0]],
-        #     [u'Valeur6', u'Valeur7', u'Valeur8', u'Valeur9', u'Valeur10'],
-        #     [u'Valeur11', u'Valeur12', u'Valeur13', u'Valeur14', u'Valeur15']
-        #]
-
-
-        f = open(file[:-3]+"csv", 'w')
-        ligneEntete = ";".join(entetes) + "\n"
-        writer = csv.writer(f, delimiter=";")
-        f.write(ligneEntete)    
-        writer.writerows(valeurs)
-
-        f.close()
-
-
-        Input_Table = file[:-3]+"csv"  # set the filepath for the input CSV
-        lon_field = 'x' # set the name for the field containing the longitude
-        lat_field = 'y' # set the name for the field containing the latitude
-        crs = 4326 # set the crs as needed
-        Output_Layer = file[:-3]+"shp" # set the filepath for the output shapefile
-         
-        spatRef = QgsCoordinateReferenceSystem(crs, QgsCoordinateReferenceSystem.EpsgCrsId)
-         
-        inp_tab = QgsVectorLayer(Input_Table, 'Input_Table', 'ogr')
-        prov = inp_tab.dataProvider()
-        fields = inp_tab.pendingFields()
-        outLayer = QgsVectorFileWriter(Output_Layer, None, fields, QGis.WKBPoint, spatRef)
-         
-        pt = QgsPoint()
-        outFeature = QgsFeature()
-         
-        for feat in inp_tab.getFeatures():
-            attrs = feat.attributes()
-            pt.setX(float(feat[lon_field]))
-            pt.setY(float(feat[lat_field]))
-            outFeature.setAttributes(attrs)
-            outFeature.setGeometry(QgsGeometry.fromPoint(pt))
-            outLayer.addFeature(outFeature)
-        del outLayer
-
-        layer = iface.addVectorLayer(Output_Layer, 
-                             filename, "ogr")
-
-        os.remove(Input_Table)
+                QgsMapLayerRegistry.instance().addMapLayers([layer])
+                #bar.increaseValue()
