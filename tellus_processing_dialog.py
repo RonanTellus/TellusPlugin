@@ -118,11 +118,9 @@ class TellusProcessingDialog(QDialog):
 
         d = float(distance)/100
       
-        a = 0.15
         
         rad_img = radargram(seg.get_traces())
 
-        
         rad_metre  = rad_img.read_position_meter([0,-1,1])
         
         gps_sample  = rad_img.read_position([0,-1,1])
@@ -161,17 +159,15 @@ class TellusProcessingDialog(QDialog):
             x = xm[i]
             y = ym[i]
 
-           
-            if x != 0 and y!=0:
-                # add a feature
-                fet = QgsFeature()
-                fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-                fet.setAttributes([i,float(x), float(y)])
-                prov.addFeatures([fet])
+            # add a feature
+            fet = QgsFeature()
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+            fet.setAttributes([i,float(x), float(y)])
+            prov.addFeatures([fet])
 
-                # update layer's extent when new features have been added
-                # because change of extent in provider is not propagated to the layer
-                layer.updateExtents()
+            # update layer's extent when new features have been added
+            # because change of extent in provider is not propagated to the layer
+            layer.updateExtents()
 
-                QgsMapLayerRegistry.instance().addMapLayers([layer])
-                #bar.increaseValue()
+            QgsMapLayerRegistry.instance().addMapLayers([layer])
+            #bar.increaseValue()
