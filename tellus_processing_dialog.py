@@ -129,18 +129,23 @@ class TellusProcessingDialog(QDialog):
 
         xm = []
         ym = []
+        zm = []
         xm.append(gps_sample[1][0]) 
         ym.append(gps_sample[0][0])
+        zm.append(gps_sample[2][0])
         xc =  float(rad_metre[1][0])
         yc = float(rad_metre[0][0])
+        zc = float(rad_metre[2][0])
         for i in range(len(rad_metre[0])):
             if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
-                dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2),4))
+                dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2 + (rad_metre[2][i]-zc)**2),4))
                 if dista >= d:
                     xm.append(gps_sample[1][i])
                     ym.append(gps_sample[0][i])
+                    zm.append(gps_sample[2][i])
                     xc =  float(rad_metre[1][i])
                     yc = float(rad_metre[0][i])
+                    zc = float(rad_metre[2][i])
         
         
                         
@@ -152,7 +157,7 @@ class TellusProcessingDialog(QDialog):
      
 
        
-        for i in range (int(seg.nb_traces)):
+        for i in range(len(xm)):
             x = xm[i]
             y = ym[i]
 
