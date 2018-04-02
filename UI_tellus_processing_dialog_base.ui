@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
-    <height>254</height>
+    <width>568</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,59 +16,184 @@
   <widget class="QWidget" name="traces" native="true">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>80</y>
-     <width>511</width>
-     <height>61</height>
+     <x>10</x>
+     <y>180</y>
+     <width>551</width>
+     <height>171</height>
     </rect>
    </property>
-   <widget class="QRadioButton" name="radBtnRadargramme">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
+   <widget class="QLabel" name="lblFiltre">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>290</x>
       <y>10</y>
-      <width>131</width>
-      <height>20</height>
+      <width>41</width>
+      <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Affichage radargramme</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Filtre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
+   <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>0</y>
-      <width>351</width>
-      <height>61</height>
+      <x>10</x>
+      <y>30</y>
+      <width>531</width>
+      <height>141</height>
      </rect>
     </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::MultiSelection</enum>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Nb traces</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>From</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>To</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Radagram</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLabel" name="lblVisualisation">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>10</y>
+      <width>101</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Visualisation&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
+   <widget class="QFrame" name="frame2">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>0</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:1px solid lightgrey;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame3">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>0</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:1px solid lightgrey;border-top-right-radius: 5px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblInfos">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>41</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Infos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:1px solid lightgrey;border-top-left-radius: 5px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <zorder>frame3</zorder>
+   <zorder>frame2</zorder>
+   <zorder>lblFiltre</zorder>
+   <zorder>tableWidget</zorder>
+   <zorder>lblVisualisation</zorder>
+   <zorder>lblVisualisation</zorder>
+   <zorder>lblInfos</zorder>
+   <zorder>frame1</zorder>
   </widget>
   <widget class="QWidget" name="source" native="true">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>511</width>
+     <x>10</x>
+     <y>110</y>
+     <width>551</width>
      <height>61</height>
     </rect>
    </property>
    <widget class="QPushButton" name="parcourirBtn">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>0</y>
+      <x>450</x>
+      <y>30</y>
       <width>80</width>
       <height>31</height>
      </rect>
@@ -80,8 +205,8 @@
    <widget class="QLabel" name="lblDG">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>0</y>
+      <x>10</x>
+      <y>30</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -93,19 +218,37 @@
    <widget class="QLineEdit" name="pathLineEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>0</y>
-      <width>261</width>
+      <x>150</x>
+      <y>30</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="lblSource">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>71</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <zorder>parcourirBtn</zorder>
+   <zorder>lblDG</zorder>
+   <zorder>pathLineEdit</zorder>
+   <zorder>lblSource</zorder>
+   <zorder>frame</zorder>
   </widget>
   <widget class="QPushButton" name="buttonLancer">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>210</y>
+     <x>470</x>
+     <y>470</y>
      <width>80</width>
      <height>31</height>
     </rect>
@@ -117,8 +260,8 @@
   <widget class="QPushButton" name="buttonAnnuler">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>210</y>
+     <x>380</x>
+     <y>470</y>
      <width>80</width>
      <height>31</height>
     </rect>
@@ -130,18 +273,18 @@
   <widget class="QWidget" name="distance" native="true">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>511</width>
+     <x>10</x>
+     <y>350</y>
+     <width>541</width>
      <height>51</height>
     </rect>
    </property>
    <widget class="QLabel" name="lblDistance">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>221</width>
+      <x>10</x>
+      <y>20</y>
+      <width>261</width>
       <height>31</height>
      </rect>
     </property>
@@ -149,23 +292,156 @@
      <string>Distance entre chaque points (en cm)</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="sbParamDistance">
+   <widget class="QSpinBox" name="sbParamDistance">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>10</y>
-      <width>113</width>
+      <x>290</x>
+      <y>20</y>
+      <width>71</width>
       <height>27</height>
      </rect>
     </property>
+    <property name="maximum">
+     <number>100000000</number>
+    </property>
    </widget>
   </widget>
-  <zorder>distance</zorder>
-  <zorder>source</zorder>
+  <widget class="QWidget" name="visualisation" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>410</y>
+     <width>541</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="lblRadagram">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Afficher le radargram</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxRadagram">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>30</y>
+      <width>21</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>27</x>
+     <y>530</y>
+     <width>230</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/TellusProcessing/istic.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>530</y>
+     <width>185</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/TellusProcessing/rennes1.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>10</y>
+     <width>278</width>
+     <height>86</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/TellusProcessing/tellus.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>551</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:1px solid lightgrey;border-radius: 5px;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frameHeader">
+   <property name="geometry">
+    <rect>
+     <x>-10</x>
+     <y>0</y>
+     <width>581</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <zorder>frameHeader</zorder>
+  <zorder>frame</zorder>
   <zorder>traces</zorder>
+  <zorder>source</zorder>
   <zorder>buttonLancer</zorder>
   <zorder>buttonAnnuler</zorder>
+  <zorder>distance</zorder>
+  <zorder>visualisation</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

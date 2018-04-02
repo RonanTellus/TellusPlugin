@@ -21,6 +21,10 @@
  ***************************************************************************/
 """
 
+from PyQt4.QtGui import QProgressBar, QApplication
+from PyQt4 import QtCore
+from qgis.utils import iface
+from qgis.core import QgsMessageLog
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -43,18 +47,7 @@ from os.path import dirname
 from PyQt4 import QtGui
 from math import sqrt
 
-
-class Bar(QProgressBar):
-  value = 0  
-    
-  @pyqtSlot()
-  def increaseValue(self):    
-    self.setValue(self.value)
-    self.value = self.value+1
-
-bar = Bar()
-
-
+import processing
 
 class TellusProcessingDialog(QDialog):
     def __init__(self):
@@ -65,6 +58,7 @@ class TellusProcessingDialog(QDialog):
         # self.<objectname>, and you can use autoconnect slots - see
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
+
 
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
@@ -86,7 +80,7 @@ class TellusProcessingDialog(QDialog):
         workDir = settings.value(key)
         filter = 'SEG-Y Geophysical Data (*.sgy)'
         OpenInputShapeMsg = QtGui.QApplication.translate("Utility",  "Open input geophysical data file", None, QtGui.QApplication.UnicodeUTF8) 
-        inFilePath = QtGui.QFileDialog.getOpenFileName(self, OpenInputShapeMsg, workDir, filter)
+        inFilePath = QtGui.QFileDialog.getOpenFileNames(self, OpenInputShapeMsg, workDir, filter)
         inFilePath = unicode(inFilePath)
         if inFilePath:
             #  root, ext = splitext(inFilePath)
@@ -95,79 +89,282 @@ class TellusProcessingDialog(QDialog):
             workDir = dirname(inFilePath)
             settings.setValue(key, workDir)      
             
-        self.ui.pathLineEdit.setText(inFilePath) 
+        self.ui.pathLineEdit.setText(inFilePath)
+        files = eval(self.ui.pathLineEdit.text())
+        for f in files:
+            filename = os.path.splitext(os.path.basename(f))[0]
 
-        # Pushing widgets to the message bar
+            seg = survey_reader(f)
+            rowPosition = self.ui.tableWidget.rowCount()
+            
+            checkBoxItem = QTableWidgetItem()
+            checkBoxItem.setCheckState(Qt.Unchecked)
+
+            obj1 = QtGui.QTableWidgetItem()
+            obj1.setText(str(seg.nb_traces))
+            obj1.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
+            self.ui.tableWidget.insertRow(rowPosition)
+            self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
+            self.ui.tableWidget.setItem(rowPosition , 1, obj1)
+            self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
+            self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
+            self.ui.tableWidget.setItem(rowPosition,4,checkBoxItem)
+
+            # obj = QtGui.QWidget()
+            # checkbox = QtGui.QCheckBox()
+            # layout = QtGui.QHBoxLayout(obj)
+            # layout.addWidget(checkbox)
+            # layout.setAlignment(QtCore.Qt.AlignCenter)
+            # layout.setContentsMargins(0,0,0,0)
+            # obj.setLayout(layout)
+
+            # obj1 = QtGui.QTableWidgetItem()
+            # obj1.setText(str(seg.nb_traces))
+            # obj1.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
+            # self.ui.tableWidget.insertRow(rowPosition)
+            # self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
+            # self.ui.tableWidget.setItem(rowPosition , 1, obj1)
+            # self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
+            # self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
+            # self.ui.tableWidget.setCellWidget(rowPosition,4,obj)
 
 
+            
 
  
     
     def createtoline(self):
 
-        bar =  Bar()
-        iface.messageBar().pushWidget(bar, QgsMessageBar.INFO, 1) 
+
         
-        file = self.ui.pathLineEdit.text()
+        files = eval(self.ui.pathLineEdit.text())
 
-        filename = os.path.splitext(os.path.basename(file))[0]
+        for row in xrange(self.ui.tableWidget.rowCount()):
+            selected = self.ui.tableWidget.currentRow()
+            print selected
 
-        seg = survey_reader(file)
+            item = self.ui.tableWidget.item(row, 0)
+            item1 = self.ui.tableWidget.item(row, 1)
+            item2 = self.ui.tableWidget.item(row, 2)
+            item3 = self.ui.tableWidget.item(row, 3)
+            item4 = self.ui.tableWidget.item(row, 4)
+            #if(chckBx.isChecked()):
+            #chckBx.setChecked(True)
+            text = str(item.text()) 
+            text1 = str(item1.text()) 
+            text2 = str(item2.text()) 
+            text3 = str(item3.text())
+            text4 = str(item4.text())
 
-        distance = self.ui.sbParamDistance.text()
 
-        d = float(distance)/100
-      
+
+            filename = os.path.splitext(os.path.basename(text))[0]
+
+            seg = survey_reader(text)
+
+            distance = self.ui.sbParamDistance.text()
+
+            d = float(distance)/100
+          
+            a = 0.15
+            
+            rad_img = radargram(seg.get_traces())
+
+            from_trace = int(text2)
+            to_trace = int(text3)
+            
+            rad_metre  = rad_img.read_position_meter([from_trace,to_trace,1])
+
+
+            gps_sample  = rad_img.read_position([from_trace,to_trace,1])
+
+
+            if (text4 == "oui"):
+                rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
+
+
+                myfig = fig_gui()                                   # new fig object
+                myfig.update(rad_sample)                            # add data to plot
+
+
+
+                cli = cursor()              # new cursor object
+                myfig.signal = cli          # connect it with fig object 
+
+                #tr_list  = range(len(gps_sample[0]))       # list index
+
+                cli.transform = lambda x,y: [gps_sample[0][x] ,gps_sample[1][x]]
+
+            self.Progress=progressBar(' Lecture du SEG-Y ',len(rad_metre[0]))
+
+            #Prend en compte le paramère distance renseigné en cm dans le plugin afin de mettre en mémoire les point avec une distance égale à (cm) entre deux points
+            xm = []
+            ym = []
+            zm = []
+            xm.append(gps_sample[1][0]) 
+            ym.append(gps_sample[0][0])
+            zm.append(gps_sample[2][0])
+            xc =  float(rad_metre[1][0])
+            yc = float(rad_metre[0][0])
+            zc = float(rad_metre[2][0])
+            for i in range(len(rad_metre[0])):
+                self.Progress.addStep()
+                if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
+                    dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2 + (rad_metre[2][i]-zc)**2),4))
+                    if dista >= d:
+                        xm.append(gps_sample[1][i])
+                        ym.append(gps_sample[0][i])
+                        zm.append(gps_sample[2][i])
+                        xc =  float(rad_metre[1][i])
+                        yc = float(rad_metre[0][i])
+                        zc = float(rad_metre[2][i])
+            self.Progress.reset()
+
+            
+                            
+            # Specify the geometry type
+            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', filename , 'memory')
+
+            # Set the provider to accept the data source
+            prov = layer.dataProvider()
+          
+
+            self.Progress=progressBar(' Creation des points ',len(xm))
+
+            #Ajout des points en memoire à partir de la distance renseigné en (cm)
+            for i in range(len(xm)):
+                x = xm[i]
+                y = ym[i]
+                self.Progress.addStep()
+
+               
+                # add a feature
+                fet = QgsFeature()
+                fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+                fet.setAttributes([from_trace+i,float(x), float(y)])
+                prov.addFeatures([fet])
+
+                # update layer's extent when new features have been added
+                # because change of extent in provider is not propagated to the layer
+                layer.updateExtents()
+
+                QgsMapLayerRegistry.instance().addMapLayers([layer])
+                #bar.increaseValue()
+        self.Progress.reset()
+
+
+
+from radar_tools import *
+import matplotlib.pyplot as plt
+from survey_reader import survey_reader
+import os 
+from matplotlib.widgets import Button
+
+
+
+
+class fig_gui:
+    
+    def __init__(self,name = None):
+        if name is None:
+            self.name ="None"
+        else :
+            self.name = name
+
         
-        rad_img = radargram(seg.get_traces())
+        self.fig = plt.figure()
+        self.fig.canvas.set_window_title('Radagram') 
 
-        rad_metre  = rad_img.read_position_meter([0,-1,1])
+        self.ax  = [self.fig.add_subplot(111)]
         
-        gps_sample  = rad_img.read_position([0,-1,1])
-        #Prend en compte le paramère distance renseigné en cm dans le plugin afin de mettre en mémoire les point avec une distance égale à (cm) entre deux points
-        xm = []
-        ym = []
-        zm = []
-        xm.append(gps_sample[1][0]) 
-        ym.append(gps_sample[0][0])
-        zm.append(gps_sample[2][0])
-        xc =  float(rad_metre[1][0])
-        yc = float(rad_metre[0][0])
-        zc = float(rad_metre[2][0])
-        for i in range(len(rad_metre[0])):
-            if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
-                dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2 + (rad_metre[2][i]-zc)**2),4))
-                if dista >= d:
-                    xm.append(gps_sample[1][i])
-                    ym.append(gps_sample[0][i])
-                    zm.append(gps_sample[2][i])
-                    xc =  float(rad_metre[1][i])
-                    yc = float(rad_metre[0][i])
-                    zc = float(rad_metre[2][i])
+        cid = self.fig.canvas.mpl_connect('button_press_event', self.onclick)
+        self.signal = None
+        self.cursor = None
+
         
+    def update(self,data,plt_type=None , plot_number = 0):
+
+        if plt_type == "equal":
+            print( "equalized")
+            data = exposure.equalize_hist(data)
+
+        elif plt_type == "expos":
+            p2, p98 = np.percentile(data, (2, 98))
+            data = exposure.rescale_intensity(data, in_range=(p2, p98))
+
+        self.ax[plot_number].imshow(data, interpolation='nearest', aspect='auto',clim=[np.min(data),np.max(data)])
+        plt.show()
         
-                        
-        # Specify the geometry type
-        layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', filename , 'memory')
+    def onclick(self,event):
+        if self.signal is None:
+                  
+            self.cursor = [int(event.xdata),int(event.ydata)]
+        else :
+           self.signal.set_pos(event, self.name)
+
+
+class cursor:
+    
+    def __init__(self):
+        self.fig_to_update = None
+        self.func_update = None
+        self.transform = lambda x,y: [x,y]
+    
+    def set_pos(self,event,name):
+        print ("pos in pixel: ", int(event.xdata),int(event.ydata) )
+        self.pos = self.transform(int(event.xdata),int(event.ydata))
+        print("pos in data: ",self.pos)
+        if self.fig_to_update is None:
+            print ( "nothing to do")
+
+        else:
+          print "do something with matplotlib figure declare in: self.fig_to_update"
+
+
+
+
+class progressBar():
+    """!@brief Manage progressBar and loading cursor.
+    Allow to add a progressBar in Qgis and to change cursor to loading
+    input:
+        -inMsg : Message to show to the user (str)
+        -inMax : The steps of the script (int)
+    
+    output:
+        nothing but changing cursor and print progressBar inside Qgis
+    """
+    def __init__(self,inMsg=' Loading...',inMaxStep=1):
+            # initialize progressBar            
+            """
+            """# Save reference to the QGIS interface
+            QApplication.processEvents() # Help to keep UI alive
+            
+            widget = iface.messageBar().createMessage('Please wait  ',inMsg)            
+            prgBar = QProgressBar()
+            self.prgBar=prgBar
+            self.iface=iface
+            widget.layout().addWidget(self.prgBar)
+            iface.messageBar().pushWidget(widget, iface.messageBar().WARNING)
+            QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            
+            # if Max 0 and value 0, no progressBar, only cursor loading
+            # default is set to 0
+            prgBar.setValue(1)
+            # set Maximum for progressBar
+            prgBar.setMaximum(inMaxStep)
+            
+    def addStep(self):
+        """!@brief Add a step to the progressBar
+        addStep() simply add +1 to current value of the progressBar
+        """
+        plusOne=self.prgBar.value()+1
+        self.prgBar.setValue(plusOne)
+    def reset(self):
+        """!@brief Simply remove progressBar and reset cursor
         
-        # Set the provider to accept the data source
-        prov = layer.dataProvider()
-     
-
-       #{↓AJout des points en memoire à partir de la distance renseigné en (cm)
-        for i in range(len(xm)):
-            x = xm[i]
-            y = ym[i]
-
-            # add a feature
-            fet = QgsFeature()
-            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-            fet.setAttributes([i,float(x), float(y)])
-            prov.addFeatures([fet])
-
-            # update layer's extent when new features have been added
-            # because change of extent in provider is not propagated to the layer
-            layer.updateExtents()
-
-            QgsMapLayerRegistry.instance().addMapLayers([layer])
-            #bar.increaseValue()
+        """
+        # Remove progressBar and back to default cursor
+        self.iface.messageBar().clearWidgets()
+        self.iface.mapCanvas().refresh()
+        QApplication.restoreOverrideCursor()
+            

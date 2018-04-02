@@ -11,8 +11,10 @@ import numpy as np
 
 from decimal import *            
 
-
-
+from PyQt4.QtGui import QProgressBar, QApplication
+from PyQt4 import QtCore
+from qgis.utils import iface
+from qgis.core import QgsMessageLog
             
 from pyproj import Proj, transform   
         
@@ -70,11 +72,20 @@ class radargram:
             return np.array([ data[i].trace for i in index ]).T
                  
     def read_position(self, seq,data=None):
+
          index = self.ind_from_liste(seq)
+         self.Progress = progressBar(' Lecture position ',len(index))
+         for j in index:
+            self.Progress.addStep()
+         self.Progress.reset()         
          return np.array([ self.traces[i].get_position() for i in index ]).T             
     
     def read_position_meter(self, seq,data=None):
          index = self.ind_from_liste(seq)
+         self.Progress = progressBar(' Lecture position meter',len(index))
+         for j in index:
+            self.Progress.addStep()
+         self.Progress.reset()          
          POS = np.array([ self.traces[i].get_position() for i in index ]).T             
          return Reproj(POS[1,:],POS[0,:],POS[2,:])
 
@@ -124,7 +135,50 @@ class radargram:
         
 
 
-
+class progressBar():
+    """!@brief Manage progressBar and loading cursor.
+    Allow to add a progressBar in Qgis and to change cursor to loading
+    input:
+        -inMsg : Message to show to the user (str)
+        -inMax : The steps of the script (int)
+    
+    output:
+        nothing but changing cursor and print progressBar inside Qgis
+    """
+    def __init__(self,inMsg=' Loading...',inMaxStep=1):
+            # initialize progressBar            
+            """
+            """# Save reference to the QGIS interface
+            QApplication.processEvents() # Help to keep UI alive
+            
+            widget = iface.messageBar().createMessage('Please wait  ',inMsg)            
+            prgBar = QProgressBar()
+            self.prgBar=prgBar
+            self.iface=iface
+            widget.layout().addWidget(self.prgBar)
+            iface.messageBar().pushWidget(widget, iface.messageBar().WARNING)
+            QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            
+            # if Max 0 and value 0, no progressBar, only cursor loading
+            # default is set to 0
+            prgBar.setValue(1)
+            # set Maximum for progressBar
+            prgBar.setMaximum(inMaxStep)
+            
+    def addStep(self):
+        """!@brief Add a step to the progressBar
+        addStep() simply add +1 to current value of the progressBar
+        """
+        plusOne=self.prgBar.value()+1
+        self.prgBar.setValue(plusOne)
+    def reset(self):
+        """!@brief Simply remove progressBar and reset cursor
+        
+        """
+        # Remove progressBar and back to default cursor
+        self.iface.messageBar().clearWidgets()
+        self.iface.mapCanvas().refresh()
+        QApplication.restoreOverrideCursor()
 
 
 from scipy import interpolate
