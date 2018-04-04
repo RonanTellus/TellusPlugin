@@ -53,6 +53,7 @@ class Ui_TellusProcessingDialogBase(object):
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.tableWidget.setHorizontalHeaderItem(4, item)
+        self.tableWidget.verticalHeader().setVisible(False)
         self.lblVisualisation = QtGui.QLabel(self.traces)
         self.lblVisualisation.setGeometry(QtCore.QRect(430, 10, 101, 17))
         self.lblVisualisation.setObjectName(_fromUtf8("lblVisualisation"))
