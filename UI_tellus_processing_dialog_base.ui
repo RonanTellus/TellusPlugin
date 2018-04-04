@@ -87,6 +87,11 @@
       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string/>
+     </property>
+    </column>
    </widget>
    <widget class="QLabel" name="lblVisualisation">
     <property name="geometry">

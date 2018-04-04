@@ -36,7 +36,7 @@ class Ui_TellusProcessingDialogBase(object):
         self.tableWidget.setGeometry(QtCore.QRect(10, 30, 531, 141))
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
@@ -53,6 +53,8 @@ class Ui_TellusProcessingDialogBase(object):
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.tableWidget.setHorizontalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(5, item)
         self.tableWidget.verticalHeader().setVisible(False)
         self.lblVisualisation = QtGui.QLabel(self.traces)
         self.lblVisualisation.setGeometry(QtCore.QRect(430, 10, 101, 17))
@@ -177,3 +179,4 @@ class Ui_TellusProcessingDialogBase(object):
         self.label.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><img src=\":/plugins/TellusProcessing/istic.png\"/></p></body></html>", None))
         self.label_2.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><img src=\":/plugins/TellusProcessing/rennes1.png\"/></p></body></html>", None))
         self.label_3.setText(_translate("TellusProcessingDialogBase", "<html><head/><body><p><img src=\":/plugins/TellusProcessing/tellus.png\"/></p></body></html>", None))
+
