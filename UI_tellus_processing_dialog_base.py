@@ -55,6 +55,7 @@ class Ui_TellusProcessingDialogBase(object):
         self.tableWidget.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(5, item)
+        self.tableWidget.setColumnWidth(5,27)
         self.tableWidget.verticalHeader().setVisible(False)
         self.lblVisualisation = QtGui.QLabel(self.traces)
         self.lblVisualisation.setGeometry(QtCore.QRect(430, 10, 101, 17))

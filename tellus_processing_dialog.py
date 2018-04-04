@@ -102,7 +102,8 @@ class TellusProcessingDialog(QDialog):
             combo.addItem("non")
             combo.addItem("oui")
             
-
+            boutonSup = QPushButton("x")
+            boutonSup.setStyleSheet('QPushButton {background-color: #FF0000; color: white; font-weight: bold;}')
 
             nbTraces = QtGui.QTableWidgetItem()
             nbTraces.setText(str(seg.nb_traces))
@@ -113,6 +114,7 @@ class TellusProcessingDialog(QDialog):
             self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
             self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
             self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
+            self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
 
  
     
