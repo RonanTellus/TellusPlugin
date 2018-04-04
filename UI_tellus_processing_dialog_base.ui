@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>568</width>
-    <height>601</height>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -176,7 +176,6 @@
    <zorder>lblFiltre</zorder>
    <zorder>tableWidget</zorder>
    <zorder>lblVisualisation</zorder>
-   <zorder>lblVisualisation</zorder>
    <zorder>lblInfos</zorder>
    <zorder>frame1</zorder>
   </widget>
@@ -238,17 +237,12 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Source&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <zorder>parcourirBtn</zorder>
-   <zorder>lblDG</zorder>
-   <zorder>pathLineEdit</zorder>
-   <zorder>lblSource</zorder>
-   <zorder>frame</zorder>
   </widget>
   <widget class="QPushButton" name="buttonLancer">
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>470</y>
+     <y>410</y>
      <width>80</width>
      <height>31</height>
     </rect>
@@ -261,7 +255,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>470</y>
+     <y>410</y>
      <width>80</width>
      <height>31</height>
     </rect>
@@ -306,50 +300,11 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="visualisation" native="true">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>410</y>
-     <width>541</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <widget class="QLabel" name="lblRadagram">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>151</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Afficher le radargram</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBoxRadagram">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>30</y>
-      <width>21</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
-    </property>
-   </widget>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>27</x>
-     <y>530</y>
+     <y>460</y>
      <width>230</width>
      <height>64</height>
     </rect>
@@ -365,7 +320,7 @@
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>530</y>
+     <y>460</y>
      <width>185</width>
      <height>64</height>
     </rect>
@@ -396,7 +351,7 @@
      <x>10</x>
      <y>110</y>
      <width>551</width>
-     <height>401</height>
+     <height>341</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -435,7 +390,6 @@
   <zorder>buttonLancer</zorder>
   <zorder>buttonAnnuler</zorder>
   <zorder>distance</zorder>
-  <zorder>visualisation</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
   <zorder>label_3</zorder>
