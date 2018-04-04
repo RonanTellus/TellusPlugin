@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf8
 """
 /***************************************************************************
  TellusProcessingDialog
@@ -150,11 +150,14 @@ class TellusProcessingDialog(QDialog):
             item4 = self.ui.tableWidget.item(row, 4)
             #if(chckBx.isChecked()):
             #chckBx.setChecked(True)
-            text = str(item.text()) 
-            text1 = str(item1.text()) 
-            text2 = str(item2.text()) 
-            text3 = str(item3.text())
-            text4 = str(item4.text())
+            
+            text = item.text()
+            text1 = item1.text()
+            text2 = item2.text()
+            text3 = item3.text()
+            text4 = item4.text()
+            
+            print text
 
 
 
