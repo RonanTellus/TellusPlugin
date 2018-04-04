@@ -101,6 +101,8 @@ class TellusProcessingDialog(QDialog):
             combo = QComboBox()
             combo.addItem("non")
             combo.addItem("oui")
+            
+
 
             nbTraces = QtGui.QTableWidgetItem()
             nbTraces.setText(str(seg.nb_traces))
@@ -185,6 +187,7 @@ class TellusProcessingDialog(QDialog):
             xm.append(gps_sample[1][0]) 
             ym.append(gps_sample[0][0])
             zm.append(gps_sample[2][0])
+            tm.append(0)
             xc =  float(rad_metre[1][0])
             yc = float(rad_metre[0][0])
             zc = float(rad_metre[2][0])
@@ -203,7 +206,8 @@ class TellusProcessingDialog(QDialog):
             self.Progress.reset()
 
             
-                            
+            print(len(tm)) 
+            print(len(xm))               
             # Specify the geometry type
             layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', filename , 'memory')
 
@@ -217,13 +221,11 @@ class TellusProcessingDialog(QDialog):
             for i in range(len(xm)):
                 x = xm[i]
                 y = ym[i]
+                t = tm[i]
                 self.Progress.addStep()
-
-               
-                # add a feature
                 fet = QgsFeature()
                 fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-                fet.setAttributes([from_trace+tm[i],float(x), float(y)])
+                fet.setAttributes([t,float(x), float(y)])
                 prov.addFeatures([fet])
 
                 # update layer's extent when new features have been added
