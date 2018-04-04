@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """
 /***************************************************************************
  TellusProcessingDialog
@@ -97,39 +97,19 @@ class TellusProcessingDialog(QDialog):
             seg = survey_reader(f)
             rowPosition = self.ui.tableWidget.rowCount()
             
-            checkBoxItem = QTableWidgetItem()
-            checkBoxItem.setCheckState(Qt.Unchecked)
+            combo = QComboBox()
+            combo.addItem("non")
+            combo.addItem("oui")
 
-            obj1 = QtGui.QTableWidgetItem()
-            obj1.setText(str(seg.nb_traces))
-            obj1.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
+            nbTraces = QtGui.QTableWidgetItem()
+            nbTraces.setText(str(seg.nb_traces))
+            nbTraces.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
             self.ui.tableWidget.insertRow(rowPosition)
             self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
-            self.ui.tableWidget.setItem(rowPosition , 1, obj1)
+            self.ui.tableWidget.setItem(rowPosition , 1, nbTraces)
             self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
             self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
-            self.ui.tableWidget.setItem(rowPosition,4,checkBoxItem)
-
-            # obj = QtGui.QWidget()
-            # checkbox = QtGui.QCheckBox()
-            # layout = QtGui.QHBoxLayout(obj)
-            # layout.addWidget(checkbox)
-            # layout.setAlignment(QtCore.Qt.AlignCenter)
-            # layout.setContentsMargins(0,0,0,0)
-            # obj.setLayout(layout)
-
-            # obj1 = QtGui.QTableWidgetItem()
-            # obj1.setText(str(seg.nb_traces))
-            # obj1.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
-            # self.ui.tableWidget.insertRow(rowPosition)
-            # self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
-            # self.ui.tableWidget.setItem(rowPosition , 1, obj1)
-            # self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
-            # self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
-            # self.ui.tableWidget.setCellWidget(rowPosition,4,obj)
-
-
-            
+            self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
 
  
     
@@ -147,17 +127,13 @@ class TellusProcessingDialog(QDialog):
             item1 = self.ui.tableWidget.item(row, 1)
             item2 = self.ui.tableWidget.item(row, 2)
             item3 = self.ui.tableWidget.item(row, 3)
-            item4 = self.ui.tableWidget.item(row, 4)
-            #if(chckBx.isChecked()):
-            #chckBx.setChecked(True)
-            
+            item4 = self.ui.tableWidget.cellWidget(row, 4)
+
             text = item.text()
             text1 = item1.text()
             text2 = item2.text()
             text3 = item3.text()
-            text4 = item4.text()
-            
-            print text
+            text4 = item4.currentText()
 
 
 
@@ -253,7 +229,7 @@ class TellusProcessingDialog(QDialog):
 
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
-        self.Progress.reset()
+            self.Progress.reset()
 
 
 
