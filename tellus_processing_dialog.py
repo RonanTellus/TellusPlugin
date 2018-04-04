@@ -68,6 +68,7 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
+        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
 
         self.setWindowTitle("Lecteur SEG-Y")
         
@@ -229,8 +230,12 @@ class TellusProcessingDialog(QDialog):
 
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
-            self.Progress.reset()
+            self.Progress.reset()    
+            self.resetData()
 
+    def resetData(self):
+        self.ui.tableWidget.setRowCount(0)
+        self.ui.pathLineEdit.setText("")
 
 
 from radar_tools import *
