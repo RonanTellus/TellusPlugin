@@ -75,18 +75,33 @@ class radargram:
 
          index = self.ind_from_liste(seq)
          self.Progress = progressBar(' Lecture position ',len(index))
-         for j in index:
+         lattitude =  np.array([])
+         longitude = np.array([])
+         altitude = np.array([])
+
+         for i in index:
+            POS = self.traces[i].get_position()
+            lattitude=np.append(lattitude,POS[0]) 
+            longitude=np.append(longitude,POS[1]) 
+            altitude=np.append(altitude,POS[2]) 
             self.Progress.addStep()
          self.Progress.reset()         
-         return np.array([ self.traces[i].get_position() for i in index ]).T             
+         return np.array([lattitude,longitude,altitude ])             
     
     def read_position_meter(self, seq,data=None):
          index = self.ind_from_liste(seq)
          self.Progress = progressBar(' Lecture position meter',len(index))
-         for j in index:
+         lattitude =  np.array([])
+         longitude = np.array([])
+         altitude = np.array([])
+         for i in index:
+            POS = self.traces[i].get_position()
+            lattitude=np.append(lattitude,POS[0]) 
+            longitude=np.append(longitude,POS[1]) 
+            altitude=np.append(altitude,POS[2])             
             self.Progress.addStep()
          self.Progress.reset()          
-         POS = np.array([ self.traces[i].get_position() for i in index ]).T             
+         POS = np.array([ lattitude,longitude,altitude ])             
          return Reproj(POS[1,:],POS[0,:],POS[2,:])
 
     def read_quality(self,seq,data= None):
