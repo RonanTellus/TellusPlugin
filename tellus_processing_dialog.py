@@ -103,7 +103,7 @@ class TellusProcessingDialog(QDialog):
             combo.addItem("oui")
             
             boutonSup = QPushButton("x")
-            boutonSup.setStyleSheet('QPushButton {background-color: #FF0000; color: white; font-weight: bold;}')
+            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
 
             nbTraces = QtGui.QTableWidgetItem()
             nbTraces.setText(str(seg.nb_traces))
