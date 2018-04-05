@@ -102,8 +102,12 @@ class TellusProcessingDialog(QDialog):
             combo.addItem("non")
             combo.addItem("oui")
             
-            boutonSup = QPushButton("x")
+            boutonSup = QtGui.QPushButton(str(rowPosition), self)
+            boutonSup.setText("X")
             boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
+            
+            #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
+                        
 
             nbTraces = QtGui.QTableWidgetItem()
             nbTraces.setText(str(seg.nb_traces))
@@ -115,7 +119,15 @@ class TellusProcessingDialog(QDialog):
             self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
             self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
             self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
-
+            
+            boutonSup.clicked.connect(lambda: self.make_delete(rowPosition))
+            
+            
+            
+    def make_delete(self,ligne):
+        l = int(ligne)
+        l = self.ui.tableWidget.currentRow()
+        self.ui.tableWidget.removeRow(ligne)   
  
     
     def createtoline(self):
@@ -357,4 +369,6 @@ class progressBar():
         self.iface.messageBar().clearWidgets()
         self.iface.mapCanvas().refresh()
         QApplication.restoreOverrideCursor()
+        
+
             
