@@ -102,10 +102,14 @@ class TellusProcessingDialog(QDialog):
             combo.addItem("non")
             combo.addItem("oui")
             
-            boutonSup = QtGui.QPushButton(str(rowPosition), self)
+            name = str(rowPosition)
+            print(name)
+            boutonSup = QtGui.QPushButton(name, self)
             boutonSup.setText("X")
             boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-            
+            print(23)
+            print(name)
+            boutonSup.clicked.connect(lambda ligne=name: self.make_delete(ligne))   
             #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
                         
 
@@ -120,14 +124,17 @@ class TellusProcessingDialog(QDialog):
             self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
             self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
             
-            boutonSup.clicked.connect(lambda: self.make_delete(rowPosition))
+            
             
             
             
     def make_delete(self,ligne):
+        print(35)
+        print(ligne)
         l = int(ligne)
-        l = self.ui.tableWidget.currentRow()
-        self.ui.tableWidget.removeRow(ligne)   
+        print(45)
+        print(l)
+        self.ui.tableWidget.removeRow(l)   
  
     
     def createtoline(self):
