@@ -48,6 +48,8 @@ from PyQt4 import QtGui
 from math import sqrt
 
 import processing
+from functools import partial
+
 
 class TellusProcessingDialog(QDialog):
     def __init__(self):
@@ -68,73 +70,85 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
-        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
 
         self.setWindowTitle("Lecteur SEG-Y")
         
 
        
     def inFile(self):
-        """Opens an open file dialog"""  
-        settings = QtCore.QSettings()
-        key = '/UI/lastShapefileDir'
-        workDir = settings.value(key)
-        filter = 'SEG-Y Geophysical Data (*.sgy)'
-        OpenInputShapeMsg = QtGui.QApplication.translate("Utility",  "Open input geophysical data file", None, QtGui.QApplication.UnicodeUTF8) 
-        inFilePath = QtGui.QFileDialog.getOpenFileNames(self, OpenInputShapeMsg, workDir, filter)
-        inFilePath = unicode(inFilePath)
-        if inFilePath:
-            #  root, ext = splitext(inFilePath)
-            # if ext.upper() != '.SHP':
-            #    inFilePath = '%s.shp' % inFilePath
-            workDir = dirname(inFilePath)
-            settings.setValue(key, workDir)      
-            
-        self.ui.pathLineEdit.setText(inFilePath)
-        files = eval(self.ui.pathLineEdit.text())
-        for f in files:
-            filename = os.path.splitext(os.path.basename(f))[0]
+       """Opens an open file dialog"""  
+       settings = QtCore.QSettings()
+       key = '/UI/lastShapefileDir'
+       workDir = settings.value(key)
+       filter = 'SEG-Y Geophysical Data (*.sgy)'
+       OpenInputShapeMsg = QtGui.QApplication.translate("Utility",  "Open input geophysical data file", None, QtGui.QApplication.UnicodeUTF8)
+       inFilePath = QtGui.QFileDialog.getOpenFileNames(self, OpenInputShapeMsg, workDir, filter)
+       inFilePath = unicode(inFilePath)
+       if inFilePath:
+           #  root, ext = splitext(inFilePath)
+           # if ext.upper() != '.SHP':
+           #    inFilePath = '%s.shp' % inFilePath
+           workDir = dirname(inFilePath)
+           settings.setValue(key, workDir)      
+           
+       self.ui.pathLineEdit.setText(inFilePath)
+       files = eval(self.ui.pathLineEdit.text())
+       for f in files:
+           filename = os.path.splitext(os.path.basename(f))[0]
 
-            seg = survey_reader(f)
-            rowPosition = self.ui.tableWidget.rowCount()
-            
-            combo = QComboBox()
-            combo.addItem("non")
-            combo.addItem("oui")
-            
-            name = str(rowPosition)
-            print(name)
-            boutonSup = QtGui.QPushButton(name, self)
-            boutonSup.setText("X")
-            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-            print(23)
-            print(name)
-            boutonSup.clicked.connect(lambda ligne=name: self.make_delete(ligne))   
-            #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
-                        
+           seg = survey_reader(f)
+           rowPosition = self.ui.tableWidget.rowCount()
+           
+           combo = QComboBox()
+           combo.addItem("non")
+           combo.addItem("oui")
+           
+           name = str(rowPosition)
+           print(name)
+           boutonSup = QtGui.QPushButton(name, self)
+           boutonSup.setToolTip(name)
+           print("nameobject")
 
-            nbTraces = QtGui.QTableWidgetItem()
-            nbTraces.setText(str(seg.nb_traces))
-            nbTraces.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
-            self.ui.tableWidget.insertRow(rowPosition)
-            self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
-            self.ui.tableWidget.setItem(rowPosition , 1, nbTraces)
-            self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
-            self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
-            self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
-            self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
-            
-            
-            
-            
-            
+           boutonSup.setText("X")
+           boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
+           print(str(boutonSup.toolTip()))
+           boutonSup.clicked.connect(partial(self.make_delete,rowPosition))  
+           #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
+                       
+
+           nbTraces = QtGui.QTableWidgetItem()
+           nbTraces.setText(str(seg.nb_traces))
+           nbTraces.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
+           self.ui.tableWidget.insertRow(rowPosition)
+           self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
+           self.ui.tableWidget.setItem(rowPosition , 1, nbTraces)
+           self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
+           self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
+           self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
+           self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
+        
+
     def make_delete(self,ligne):
-        print(35)
-        print(ligne)
-        l = int(ligne)
-        print(45)
-        print(l)
-        self.ui.tableWidget.removeRow(l)   
+       l = int(ligne)
+       print(45)
+       print(l)
+       self.ui.tableWidget.removeRow(l)  
+       rowPosition = self.ui.tableWidget.rowCount()
+       while l< rowPosition:
+           name = str(l)
+           print(name)
+           boutonSup = QtGui.QPushButton(name, self)
+           boutonSup.setToolTip(name)
+           print("nameobject")
+
+           boutonSup.setText("X")
+           boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
+           print(str(boutonSup.toolTip()))
+           boutonSup.clicked.connect(partial(self.make_delete,l))  
+           self.ui.tableWidget.setCellWidget(l,5,boutonSup)
+           l = l+1
+
+
  
     
     def createtoline(self):
@@ -146,6 +160,7 @@ class TellusProcessingDialog(QDialog):
         for row in xrange(self.ui.tableWidget.rowCount()):
             selected = self.ui.tableWidget.currentRow()
             print selected
+
 
             item = self.ui.tableWidget.item(row, 0)
             item1 = self.ui.tableWidget.item(row, 1)
@@ -181,6 +196,8 @@ class TellusProcessingDialog(QDialog):
 
             gps_sample  = rad_img.read_position([from_trace,to_trace,1])
 
+            print rad_metre
+            print gps_sample
 
             if (text4 == "oui"):
                 rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
@@ -204,11 +221,9 @@ class TellusProcessingDialog(QDialog):
             xm = []
             ym = []
             zm = []
-            tm = []
             xm.append(gps_sample[1][0]) 
             ym.append(gps_sample[0][0])
             zm.append(gps_sample[2][0])
-            tm.append(0)
             xc =  float(rad_metre[1][0])
             yc = float(rad_metre[0][0])
             zc = float(rad_metre[2][0])
@@ -217,7 +232,6 @@ class TellusProcessingDialog(QDialog):
                 if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
                     dista = float(round(sqrt((rad_metre[0][i]-yc)**2+ (rad_metre[1][i]-xc)**2 + (rad_metre[2][i]-zc)**2),4))
                     if dista >= d:
-                        tm.append(i)
                         xm.append(gps_sample[1][i])
                         ym.append(gps_sample[0][i])
                         zm.append(gps_sample[2][i])
@@ -227,8 +241,7 @@ class TellusProcessingDialog(QDialog):
             self.Progress.reset()
 
             
-            print(len(tm)) 
-            print(len(xm))               
+                            
             # Specify the geometry type
             layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', filename , 'memory')
 
@@ -242,11 +255,13 @@ class TellusProcessingDialog(QDialog):
             for i in range(len(xm)):
                 x = xm[i]
                 y = ym[i]
-                t = tm[i]
                 self.Progress.addStep()
+
+               
+                # add a feature
                 fet = QgsFeature()
                 fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-                fet.setAttributes([t,float(x), float(y)])
+                fet.setAttributes([from_trace+i,float(x), float(y)])
                 prov.addFeatures([fet])
 
                 # update layer's extent when new features have been added
@@ -255,12 +270,8 @@ class TellusProcessingDialog(QDialog):
 
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
-            self.Progress.reset()    
-            self.resetData()
+            self.Progress.reset()
 
-    def resetData(self):
-        self.ui.tableWidget.setRowCount(0)
-        self.ui.pathLineEdit.setText("")
 
 
 from radar_tools import *
@@ -282,7 +293,7 @@ class fig_gui:
 
         
         self.fig = plt.figure()
-        self.fig.canvas.set_window_title('Radargram') 
+        self.fig.canvas.set_window_title('Radagram') 
 
         self.ax  = [self.fig.add_subplot(111)]
         
@@ -376,6 +387,4 @@ class progressBar():
         self.iface.messageBar().clearWidgets()
         self.iface.mapCanvas().refresh()
         QApplication.restoreOverrideCursor()
-        
-
             
