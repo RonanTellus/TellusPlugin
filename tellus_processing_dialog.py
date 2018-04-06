@@ -70,6 +70,7 @@ class TellusProcessingDialog(QDialog):
         self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
+        self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
 
         self.setWindowTitle("Lecteur SEG-Y")
         
@@ -271,8 +272,12 @@ class TellusProcessingDialog(QDialog):
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
             self.Progress.reset()
+            self.resetData()
 
 
+    def resetData(self):
+        self.ui.tableWidget.setRowCount(0)
+        self.ui.pathLineEdit.setText("")
 
 from radar_tools import *
 import matplotlib.pyplot as plt
@@ -329,11 +334,27 @@ class cursor:
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y: [x,y]
-    
+        layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', 'Mes points' , 'memory')
+        prov = layer.dataProvider()
+        QgsMapLayerRegistry.instance().addMapLayers([layer])
     def set_pos(self,event,name):
         print ("pos in pixel: ", int(event.xdata),int(event.ydata) )
         self.pos = self.transform(int(event.xdata),int(event.ydata))
         print("pos in data: ",self.pos)
+        x = self.pos[1]
+        y = self.pos[0]
+            
+        layer = iface.activeLayer()
+        prov = layer.dataProvider()
+        fet = QgsFeature()
+        fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+        fet.setAttributes([0,float(x),float(y)])
+        prov.addFeatures([fet])
+        # update layer's extent when new features have been added
+        # because change of extent in provider is not propagated to the layer
+        layer.updateExtents()
+
+        #QgsMapLayerRegistry.instance().addMapLayers([layer])
         if self.fig_to_update is None:
             print ( "nothing to do")
 
