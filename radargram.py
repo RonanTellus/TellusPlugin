@@ -33,8 +33,6 @@ class fig_gui:
         
         self.fig = plt.figure()
         self.fig.canvas.set_window_title(self.name) 
-        
-        
         seg = survey_reader(self.name)
 # create a group of traces from seg-y 
         self.ax  = [self.fig.add_subplot(111)]
@@ -78,15 +76,15 @@ class fig_gui:
 
 class cursor:
     
-    def __init__(self,name = None,fr = 0, tr = 0):
+    def __init__(self,name = None,fr = 0):
         self.name=name
-        self.tr
+        self.fr=fr
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
         exist = len(QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')) != 0
         if (exist == False):
-            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier', 'Points d\'interet' , 'memory')
+            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier&field=Commentaire', 'Points d\'interet' , 'memory')
             self.layer = layer
             self.prov = layer.dataProvider()
             QgsMapLayerRegistry.instance().addMapLayers([layer])
@@ -108,7 +106,7 @@ class cursor:
         prov = self.prov
         fet = QgsFeature()
         fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-        fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),self.name])
+        fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),self.name,""])
         prov.addFeatures([fet])
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
