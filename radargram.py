@@ -37,7 +37,7 @@ class fig_gui:
         self.ax  = [self.fig.add_subplot(111)]
         self.update(self.rad_sample)                            # add data to plot
 
-        cli = cursor()              # new cursors object
+        cli = cursor(self.name)              # new cursors object
         self.fig.signal = cli          # connect it with fig object 
 
                 #tr_list  = range(len(gps_sample[0]))       # list index
@@ -68,6 +68,11 @@ class fig_gui:
            self.fig.signal.set_pos(event, self.name)
 
 
+
+
+
+
+
 class cursor:
     
     def __init__(self,name = None):
@@ -75,18 +80,18 @@ class cursor:
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
-        exist = len(QgsMapLayerRegistry.instance().mapLayersByName('Points d interet')) != 0
+        exist = len(QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')) != 0
         if (exist == False):
-            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier', 'Points d interet' , 'memory')
+            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier', 'Points d\'interet' , 'memory')
             self.layer = layer
-            prov = layer.dataProvider()
+            self.prov = layer.dataProvider()
             QgsMapLayerRegistry.instance().addMapLayers([layer])
         else:
             layers = QgsMapLayerRegistry.instance().mapLayers()
             for layer in layers.iteritems():
                 self.layer = layer[1]
                 print self.layer
-                prov = self.layer.dataProvider()
+                self.prov = self.layer.dataProvider()
 
 
     def set_pos(self,event,name):
@@ -96,7 +101,7 @@ class cursor:
         x = self.pos[0]
         y = self.pos[1]
         layer = self.layer
-        prov = layer.dataProvider()
+        prov = self.prov
         fet = QgsFeature()
         fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
         fet.setAttributes([ int(event.xdata),float(x),float(y),self.name])
