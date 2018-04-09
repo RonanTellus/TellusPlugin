@@ -78,6 +78,7 @@ class cursor:
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
         layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', 'Mes points' , 'memory')
+        self.layer = layer
         prov = layer.dataProvider()
         QgsMapLayerRegistry.instance().addMapLayers([layer])
     def set_pos(self,event,name):
@@ -87,7 +88,7 @@ class cursor:
         x = self.pos[0]
         y = self.pos[1]
             
-        layer = iface.activeLayer()
+        layer = self.layer
         prov = layer.dataProvider()
         fet = QgsFeature()
         fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
