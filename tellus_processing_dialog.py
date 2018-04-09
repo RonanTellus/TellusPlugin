@@ -274,7 +274,6 @@ class TellusProcessingDialog(QDialog):
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
             self.Progress.reset()
-            self.resetData()
 
 
     def resetData(self):
