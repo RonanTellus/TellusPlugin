@@ -96,7 +96,7 @@ class cursor:
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
         layer.updateExtents()
-
+        layer.triggerRepaint()
         #QgsMapLayerRegistry.instance().addMapLayers([layer])
         if self.fig_to_update is None:
             print ( "nothing to do")
