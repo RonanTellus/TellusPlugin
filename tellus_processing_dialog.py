@@ -73,6 +73,8 @@ class TellusProcessingDialog(QDialog):
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
+		
+        self.connect(self.ui.buttonExporter,SIGNAL("clicked()"),self.exportData)
 
         self.setWindowTitle("Lecteur SEG-Y")
         
@@ -265,6 +267,22 @@ class TellusProcessingDialog(QDialog):
     def resetData(self):
         self.ui.tableWidget.setRowCount(0)
         self.ui.pathLineEdit.setText("")
+		
+	
+    def exportData(self):        
+        iter = iface.legendInterface().selectedLayers()
+        layer_line = []
+        # Ensuite on peut tester le type d'objet:
+        for layer in iter:
+             if layer.wkbType() == QGis.WKBLineString:
+                print "couche selectionnee type ligne: :",  layer.name()
+                layer_line.appedn(layer)
+        
+        exportFile = open("D:\export_data.geojson", "w")
+        exportFile.write("type /: FeatureCollection")
+        for line in layer_line:
+            exportFile.write("i"+line+"\n")
+        exportFile.close()
 
 
 
