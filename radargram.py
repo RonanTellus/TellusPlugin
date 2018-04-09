@@ -35,7 +35,7 @@ class fig_gui:
         self.ax  = [self.fig.add_subplot(111)]
         self.update(self.rad_sample)                            # add data to plot
 
-        cli = cursor()              # new cursors object
+        cli = cursor(self.name)              # new cursors object
         self.fig.signal = cli          # connect it with fig object 
 
                 #tr_list  = range(len(gps_sample[0]))       # list index
@@ -73,11 +73,12 @@ class fig_gui:
 
 class cursor:
     
-    def __init__(self):
+    def __init__(self,name = None):
+        self.name=name
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
-        layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', 'Mes points' , 'memory')
+        layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier', 'Mes points' , 'memory')
         self.layer = layer
         prov = layer.dataProvider()
         QgsMapLayerRegistry.instance().addMapLayers([layer])
@@ -92,7 +93,7 @@ class cursor:
         prov = layer.dataProvider()
         fet = QgsFeature()
         fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-        fet.setAttributes([0,float(x),float(y)])
+        fet.setAttributes([ int(event.xdata),float(x),float(y),self.name])
         prov.addFeatures([fet])
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
