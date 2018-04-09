@@ -29,7 +29,7 @@ class fig_gui:
      
         
         self.fig = plt.figure()
-        
+        self.fig.canvas.set_window_title(self.name) 
         
         
         seg = survey_reader(self.name)
