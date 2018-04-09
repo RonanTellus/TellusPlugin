@@ -201,7 +201,7 @@ class TellusProcessingDialog(QDialog):
 
             if (text4 == "oui"):
                 rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
-                myfig = fig_gui(filename,rad_sample,gps_sample)                                   # new fig object
+                myfig = fig_gui(filename,rad_sample,gps_sample,from_trace)                                   # new fig object
                 
 
             self.Progress=progressBar(' Lecture du SEG-Y ',len(rad_metre[0]))

@@ -15,7 +15,7 @@ from qgis.gui import *
 
 class fig_gui:
     
-    def __init__(self,name = None,rad_sample=[],gps_sample = []):
+    def __init__(self,name = None,rad_sample=[],gps_sample = [],from_trace = 0):
         if name is None:
             self.name ="None"
             self.rad_sample=[];
@@ -24,6 +24,8 @@ class fig_gui:
             self.name = name
             self.rad_sample=rad_sample;
             self.gps_sample=gps_sample;
+            self.fr = from_trace
+            print(from_trace)
             print (name)
 
      
@@ -37,7 +39,7 @@ class fig_gui:
         self.ax  = [self.fig.add_subplot(111)]
         self.update(self.rad_sample)                            # add data to plot
 
-        cli = cursor(self.name)              # new cursors object
+        cli = cursor(self.name,self.fr)              # new cursors object
         self.fig.signal = cli          # connect it with fig object 
 
                 #tr_list  = range(len(gps_sample[0]))       # list index
@@ -75,8 +77,9 @@ class fig_gui:
 
 class cursor:
     
-    def __init__(self,name = None):
+    def __init__(self,name = None,fr = 0):
         self.name=name
+        self.fr = fr
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
@@ -104,7 +107,7 @@ class cursor:
         prov = self.prov
         fet = QgsFeature()
         fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-        fet.setAttributes([ int(event.xdata),float(x),float(y),self.name])
+        fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),self.name])
         prov.addFeatures([fet])
         # update layer's extent when new features have been added
         # because change of extent in provider is not propagated to the layer
