@@ -195,28 +195,14 @@ class TellusProcessingDialog(QDialog):
             to_trace = int(text3)
             
             rad_metre  = rad_img.read_position_meter([from_trace,to_trace,1])
-
-
+            
             gps_sample  = rad_img.read_position([from_trace,to_trace,1])
-
-            print rad_metre
-            print gps_sample
+            
 
             if (text4 == "oui"):
                 rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
-
-
-                myfig = fig_gui()                                   # new fig object
-                myfig.update(rad_sample)                            # add data to plot
-
-
-
-                cli = cursor()              # new cursor object
-                myfig.signal = cli          # connect it with fig object 
-
-                #tr_list  = range(len(gps_sample[0]))       # list index
-
-                cli.transform = lambda x,y: [gps_sample[0][x] ,gps_sample[1][x]]
+                myfig = fig_gui(filename,rad_sample,gps_sample)                                   # new fig object
+                
 
             self.Progress=progressBar(' Lecture du SEG-Y ',len(rad_metre[0]))
 

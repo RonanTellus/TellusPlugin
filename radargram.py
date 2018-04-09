@@ -13,18 +13,37 @@ from qgis.gui import *
 
 class fig_gui:
     
-    def __init__(self,name = None):
+    def __init__(self,name = None,rad_sample=[],gps_sample = []):
         if name is None:
             self.name ="None"
+            self.rad_sample=[];
+            self.gps_sample=[];
         else :
             self.name = name
+            self.rad_sample=rad_sample;
+            self.gps_sample=gps_sample;
+            print (name)
+
+     
         
         self.fig = plt.figure()
-	self.ax  = [self.fig.add_subplot(111)]
         
+        
+        
+        seg = survey_reader(self.name)
+# create a group of traces from seg-y 
+        self.ax  = [self.fig.add_subplot(111)]
+        self.update(self.rad_sample)                            # add data to plot
+
+        cli = cursor()              # new cursors object
+        self.fig.signal = cli          # connect it with fig object 
+
+                #tr_list  = range(len(gps_sample[0]))       # list index
+
+        cli.transform = lambda x,y: [self.gps_sample[1][x] ,self.gps_sample[0][x],self]
         cid = self.fig.canvas.mpl_connect('button_press_event', self.onclick)
-        self.signal = None
-	self.cursor = None
+        
+	
         
     def update(self,data,plt_type=None , plot_number = 0):
 
@@ -40,11 +59,11 @@ class fig_gui:
                 plt.show()
         
     def onclick(self,event):
-        if self.signal is None:
+        if self.fig.signal is None:
                   
             self.cursor = [int(event.xdata),int(event.ydata)]
         else :
-           self.signal.set_pos(event, self.name)
+           self.fig.signal.set_pos(event, self.name)
 
 
 
@@ -57,7 +76,7 @@ class cursor:
     def __init__(self):
         self.fig_to_update = None
         self.func_update = None
-        self.transform = lambda x,y: [x,y]
+        self.transform = lambda x,y,z: [x,y,z]
         layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y', 'Mes points' , 'memory')
         prov = layer.dataProvider()
         QgsMapLayerRegistry.instance().addMapLayers([layer])
@@ -86,30 +105,3 @@ class cursor:
           print "do something with matplotlib figure declare in: self.fig_to_update"
 
 
-
-filename = "DAT_0001.sgy"
-
-seg = survey_reader(filename)
-
-# create a group of traces from seg-y
-rad_img = radargram(seg.get_traces())
-
-
-# extracte some traces
-from_trace = 0
-to_trace   = 2000
-rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
-gps_sample  = rad_img.read_position([from_trace,to_trace,1])  # extracte gps 1 on 2
-
-
-myfig = fig_gui()                                   # new fig object
-myfig.update(rad_sample)                            # add data to plot
-
-
-
-cli = cursor()              # new cursor object
-myfig.signal = cli          # connect it with fig object 
-
-#tr_list  = range(len(gps_sample[0]))       # list index
-
-cli.transform = lambda x,y: [gps_sample[0][x] ,gps_sample[1][x]]
