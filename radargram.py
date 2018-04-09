@@ -87,9 +87,9 @@ class cursor:
             self.prov = layer.dataProvider()
             QgsMapLayerRegistry.instance().addMapLayers([layer])
         else:
-            layers = QgsMapLayerRegistry.instance().mapLayers()
-            for layer in layers.iteritems():
-                self.layer = layer[1]
+            layers = QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')
+            for layer in layers:
+                self.layer = layer
                 print self.layer
                 self.prov = self.layer.dataProvider()
 
