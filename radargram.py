@@ -15,7 +15,7 @@ from qgis.gui import *
 
 class fig_gui:
     
-    def __init__(self,name = None,rad_sample=[],gps_sample = [],from_trace = 0):
+    def __init__(self,name = None,rad_sample=[],gps_sample = [],from_trace = 0, to_trace = 0):
         if name is None:
             self.name ="None"
             self.rad_sample=[];
@@ -25,6 +25,7 @@ class fig_gui:
             self.rad_sample=rad_sample;
             self.gps_sample=gps_sample;
             self.fr = from_trace
+            self.tr=to_trace
             print(from_trace)
             print (name)
 
@@ -77,9 +78,9 @@ class fig_gui:
 
 class cursor:
     
-    def __init__(self,name = None,fr = 0):
+    def __init__(self,name = None,fr = 0, tr = 0):
         self.name=name
-        self.fr = fr
+        self.tr
         self.fig_to_update = None
         self.func_update = None
         self.transform = lambda x,y,z: [x,y,z]
