@@ -109,7 +109,7 @@ class Ui_TellusProcessingDialogBase(object):
         self.buttonAnnuler = QtGui.QPushButton(TellusProcessingDialogBase)
         self.buttonAnnuler.setGeometry(QtCore.QRect(380, 410, 80, 31))
         self.buttonAnnuler.setObjectName(_fromUtf8("buttonAnnuler"))
-		self.buttonExporter = QtGui.QPushButton(TellusProcessingDialogBase)
+        self.buttonExporter = QtGui.QPushButton(TellusProcessingDialogBase)
         self.buttonExporter.setGeometry(QtCore.QRect(40, 410, 80, 31))
         self.buttonExporter.setObjectName(_fromUtf8("buttonExporter"))
         self.distance = QtGui.QWidget(TellusProcessingDialogBase)

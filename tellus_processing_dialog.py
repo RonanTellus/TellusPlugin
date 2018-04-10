@@ -43,6 +43,7 @@ import matplotlib.pyplot as plt
 
 import resources
 import os
+import sys
 from os.path import dirname
 from PyQt4 import QtGui
 from math import sqrt
@@ -270,17 +271,16 @@ class TellusProcessingDialog(QDialog):
 		
 	
     def exportData(self):        
-        iter = iface.legendInterface().selectedLayers()
+        iter = iface.legendInterface().selectedLayers(True)
         layer_line = []
-		exportFile = open("D:\export_data.geojson", "w")
-		exportFile.write("type /: FeatureCollection")
         # Ensuite on peut tester le type d'objet:
         for layer in iter:
              if layer.wkbType() == QGis.WKBLineString:
-				exportFile.write("couche selectionnee type ligne: :",  layer.name())
                 print "couche selectionnee type ligne: :",  layer.name()
                 layer_line.appedn(layer)
 
+        exportFile = open("D:\export_data.geojson", "w")
+        exportFile.write("type /: FeatureCollection")
         for line in layer_line:
             exportFile.write("i"+line+"\n")
         exportFile.close()
