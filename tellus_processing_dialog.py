@@ -271,18 +271,24 @@ class TellusProcessingDialog(QDialog):
 		
 	
     def exportData(self):        
-        iter = iface.legendInterface().selectedLayers(True)
-        layer_line = []
-        # Ensuite on peut tester le type d'objet:
-        for layer in iter:
-             if layer.wkbType() == QGis.WKBLineString:
-                print "couche selectionnee type ligne: :",  layer.name()
-                layer_line.appedn(layer)
+        selectedIndexes = iface.legendInterface().selectedLayers()
+        selectedLayers = []
+        if len(selectedIndexes) == 0:
+            print "Selection vide "
+        elif len(selectedIndexes) == 1:
+            selectedLayers = [iface.activeLayer()]
+        else:
+            selectLayers = iface.legendInterface().selectedLayers()
+            for layer in selectLayers:
+                selectedLayers.append(layer)
+                if layer.wkbType() == QGis.WKBLineString:
+                    print "couche selectionnee type ligne: :",  layer.name()
+                    selectedLayers.append(layer)
 
         exportFile = open("D:\export_data.geojson", "w")
-        exportFile.write("type /: FeatureCollection")
-        for line in layer_line:
-            exportFile.write("i"+line+"\n")
+        exportFile.write("type /: FeatureCollection \n")
+        for line in selectedLayers:
+            exportFile.write("name :"+line.name() +" => "+ line.source()+"\n")
         exportFile.close()
 
 
