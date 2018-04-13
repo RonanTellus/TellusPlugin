@@ -285,10 +285,18 @@ class TellusProcessingDialog(QDialog):
                     print "couche selectionnee type ligne: :",  layer.name()
                     selectedLayers.append(layer)
 
-        exportFile = open("D:\export_data.geojson", "w")
-        exportFile.write("type /: FeatureCollection \n")
+        exportFile = open("D:\export_data.csv", "w")
+        exportFile.write("Trace,x,y\n")
+        #name source
         for line in selectedLayers:
-            exportFile.write("name :"+line.name() +" => "+ line.source()+"\n")
+            with edit(line):
+                features = line.getFeatures()
+                #f = line.getFeatures().next()
+                for f in features:
+                    aux =""
+                    for ii in f.attributes():
+                        aux = aux + ","+str(ii)
+                    exportFile.write(aux[1:]+"\n")
         exportFile.close()
 
 
