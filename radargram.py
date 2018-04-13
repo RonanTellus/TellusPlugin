@@ -42,8 +42,10 @@ class fig_gui:
         self.fig.signal = cli          # connect it with fig object 
 
                 #tr_list  = range(len(gps_sample[0]))       # list index
-
-        cli.transform = lambda x,y: [self.gps_sample[1][x] ,self.gps_sample[0][x],self]
+    
+    
+        
+        cli.transform = lambda x,y: [self.gps_sample[1][x] ,self.gps_sample[0][x],self.gps_sample[2][x],y,self]
         cid = self.fig.canvas.mpl_connect('button_press_event', self.onclick)
         
 	
@@ -84,7 +86,7 @@ class cursor:
         self.transform = lambda x,y,z: [x,y,z]
         exist = len(QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')) != 0
         if (exist == False):
-            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=Nom du fichier&field=Commentaire', 'Points d\'interet' , 'memory')
+            layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=z&field=Profondeur&field=Nom du fichier&field=Commentaire', 'Points d\'interet' , 'memory')
             self.layer = layer
             self.prov = layer.dataProvider()
             QgsMapLayerRegistry.instance().addMapLayers([layer])
@@ -95,28 +97,31 @@ class cursor:
                 print self.layer
                 self.prov = self.layer.dataProvider()
 
-
+    def get_pos(self,event):
+        res = [int(event.xdata),int(event.ydata)]
+        return 
     def set_pos(self,event,name):
-        print ("pos in pixel: ", int(event.xdata),int(event.ydata) )
-        self.pos = self.transform(int(event.xdata),int(event.ydata))
-        print("pos in data: ",self.pos)
-        x = self.pos[0]
-        y = self.pos[1]
-        layer = self.layer
-        prov = self.prov
-        fet = QgsFeature()
-        fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
-        fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),self.name,""])
-        prov.addFeatures([fet])
-        # update layer's extent when new features have been added
-        # because change of extent in provider is not propagated to the layer
-        layer.updateExtents()
-        layer.triggerRepaint()
-        #QgsMapLayerRegistry.instance().addMapLayers([layer])
-        if self.fig_to_update is None:
-            print ( "nothing to do")
-
-        else:
-          print "do something with matplotlib figure declare in: self.fig_to_update"
-
+        if(event.xdata != None):
+            self.pos = self.transform(int(event.xdata),int(event.ydata))
+            x = self.pos[0]
+            y = self.pos[1]
+            z = self.pos[2]
+            w = self.pos[3]
+            layer = self.layer
+            prov = self.prov
+            fet = QgsFeature()
+            fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+            fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),float(z),float(w),self.name,""])
+            prov.addFeatures([fet])
+            # update layer's extent when new features have been added
+            # because change of extent in provider is not propagated to the layer
+            layer.updateExtents()
+            layer.triggerRepaint()
+            #QgsMapLayerRegistry.instance().addMapLayers([layer])
+            if self.fig_to_update is None:
+                print ( "nothing to do")
+    
+            else:
+              print "do something with matplotlib figure declare in: self.fig_to_update"
+    
 
