@@ -64,13 +64,14 @@ class TellusProcessingDialog(QDialog):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
 
-
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
+        
 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept) 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.make_ok) 
+         #self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
+        #self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
@@ -110,14 +111,11 @@ class TellusProcessingDialog(QDialog):
            combo.addItem("oui")
            
            name = str(rowPosition)
-           print(name)
            boutonSup = QtGui.QPushButton(name, self)
            boutonSup.setToolTip(name)
-           print("nameobject")
 
            boutonSup.setText("X")
            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-           print(str(boutonSup.toolTip()))
            boutonSup.clicked.connect(partial(self.make_delete,rowPosition))  
            #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
                        
@@ -133,23 +131,28 @@ class TellusProcessingDialog(QDialog):
            self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
            self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
         
-
+    
+    def make_ok(self):
+        if(self.ui.tableWidget.rowCount() == 0):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Aucun fichier sélectionné".decode("utf-8"))
+            msg.setWindowTitle("Erreur")
+            msg.exec_()
+        else:
+            self.accept()
+            self.createtoline()
+        
     def make_delete(self,ligne):
        l = int(ligne)
-       print(45)
-       print(l)
        self.ui.tableWidget.removeRow(l)  
        rowPosition = self.ui.tableWidget.rowCount()
        while l< rowPosition:
            name = str(l)
-           print(name)
            boutonSup = QtGui.QPushButton(name, self)
            boutonSup.setToolTip(name)
-           print("nameobject")
-
            boutonSup.setText("X")
            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-           print(str(boutonSup.toolTip()))
            boutonSup.clicked.connect(partial(self.make_delete,l))  
            self.ui.tableWidget.setCellWidget(l,5,boutonSup)
            l = l+1
@@ -159,14 +162,10 @@ class TellusProcessingDialog(QDialog):
     
     def createtoline(self):
 
-
-        
         files = eval(self.ui.pathLineEdit.text())
 
         for row in xrange(self.ui.tableWidget.rowCount()):
             selected = self.ui.tableWidget.currentRow()
-            print selected
-
 
             item = self.ui.tableWidget.item(row, 0)
             item1 = self.ui.tableWidget.item(row, 1)
@@ -189,19 +188,24 @@ class TellusProcessingDialog(QDialog):
             distance = self.ui.sbParamDistance.text()
 
             d = float(distance)/100
-          
-            a = 0.15
             
             rad_img = radargram(seg.get_traces())
-
-            from_trace = int(text2)
-            to_trace = int(text3)
+            
+            if(int(text3)>int(text1)):
+                
+                to_trace = int(text1)
+            else:
+                to_trace = int(text3)
+            if(int(text2)<0):
+                from_trace = 0
+            else:
+                from_trace = int(text2)
+                
             
             rad_metre  = rad_img.read_position_meter([from_trace,to_trace,1])
-            
             gps_sample  = rad_img.read_position([from_trace,to_trace,1])
             
-
+            
             if (text4 == "oui"):
                 rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
                 myfig = fig_gui(filename,rad_sample,gps_sample,from_trace,to_trace)                                   # new fig object
@@ -268,7 +272,7 @@ class TellusProcessingDialog(QDialog):
     def resetData(self):
         self.ui.tableWidget.setRowCount(0)
         self.ui.pathLineEdit.setText("")
-		
+	
 	
     def exportData(self):        
         selectedIndexes = iface.legendInterface().selectedLayers()
