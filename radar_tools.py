@@ -234,7 +234,7 @@ class auto_gain():
         if xgain is None:        
             xgain = np.linspace(0,self.l_data,len(ygain))
             
-        if xgain[-1] != self.l_data:    
+        if xgain[-1] != self.l_data:     
             xgain.append(self.l_data)
             ygain.append(ygain[-1])
         print (xgain[0], xgain[-1] ,len(ygain), len(xgain) ,self.l_data,list(range(1,self.l_data+1,1))[0] ,list(range(1,self.l_data+1,1))[-1] )
