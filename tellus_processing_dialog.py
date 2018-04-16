@@ -118,15 +118,13 @@ class TellusProcessingDialog(QDialog):
            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
            boutonSup.clicked.connect(partial(self.make_delete,rowPosition))  
            #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
-           
-           name = QtGui.QTableWidgetItem(f)
-           name.setText((str(seg.filename)))
-           name.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
+
+
            nbTraces = QtGui.QTableWidgetItem()
            nbTraces.setText(str(seg.nb_traces))
            nbTraces.setFlags(QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled)
            self.ui.tableWidget.insertRow(rowPosition)
-           self.ui.tableWidget.setItem(rowPosition , 0, name)
+           self.ui.tableWidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(f))
            self.ui.tableWidget.setItem(rowPosition , 1, nbTraces)
            self.ui.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem('0'))
            self.ui.tableWidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(seg.nb_traces)))
@@ -197,7 +195,7 @@ class TellusProcessingDialog(QDialog):
             else:
                 to_trace = int(text3)
             if(int(text2)<0):
-                from_trace = 0
+                from_trace = 1
             else:
                 from_trace = int(text2)
                 
@@ -267,7 +265,8 @@ class TellusProcessingDialog(QDialog):
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
             self.Progress.reset()
-	    self.resetData()
+            self.resetData()
+
 
     def resetData(self):
         self.ui.tableWidget.setRowCount(0)
