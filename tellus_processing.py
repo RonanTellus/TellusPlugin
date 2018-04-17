@@ -26,6 +26,8 @@ from PyQt4.QtGui import QAction, QIcon
 import resources
 # Import the code for the dialog
 from tellus_processing_dialog import TellusProcessingDialog
+# Import the code for the Export
+from tellus_processing_export import TellusProcessingExport
 import os.path
 
 
@@ -134,6 +136,8 @@ class TellusProcessing:
 
         # Create the dialog (after translation) and keep reference
         self.dlg = TellusProcessingDialog()
+        # Create the Export interface
+        self.export = TellusProcessingExport()
 
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
@@ -141,6 +145,7 @@ class TellusProcessing:
         action.setEnabled(enabled_flag)
 
         if status_tip is not None:
+            action.setStatusTip(status_tip)
             action.setStatusTip(status_tip)
 
         if whats_this is not None:
@@ -162,12 +167,20 @@ class TellusProcessing:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon_path = ':/plugins/TellusProcessing/icon.png'
+        #export icon 
+        iconExport_path = ':/plugins/TellusProcessing/istic.png'
         self.add_action(
             icon_path,
             text=self.tr(u'Tellus processing'),
             callback=self.run,
             parent=self.iface.mainWindow())
-
+        
+        #Add export button on toolbar
+        self.add_action(
+            iconExport_path,
+            text=self.tr(u'Export Data'),
+            callback=self.runExport,
+            parent=self.iface.mainWindow())
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -186,6 +199,17 @@ class TellusProcessing:
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()
+        # See if OK was pressed
+        if result:
+            # Do something useful here - delete the line containing pass and
+            # substitute with your code.
+            pass
+
+    def runExport(self):
+        # show the dialog
+        self.export.show()
+        # Run the dialog event loop
+        result = self.export.exec_()
         # See if OK was pressed
         if result:
             # Do something useful here - delete the line containing pass and
