@@ -168,7 +168,7 @@ class TellusProcessing:
 
         icon_path = ':/plugins/TellusProcessing/icon.png'
         #export icon 
-        iconExport_path = ':/plugins/TellusProcessing/istic.png'
+        iconExport_path = ':/plugins/TellusProcessing/export.png'
         self.add_action(
             icon_path,
             text=self.tr(u'Tellus processing'),
