@@ -1,32 +1,17 @@
-Plugin Builder Results
+Plugin Tellus :
 
-Your plugin TellusProcessing was created in:
-    /Users/dimas/.qgis2/python/plugins/TellusProcessing
+Le plugin TellusProcessing est dans :
+    YOUR PATH TO/.qgis2/python/plugins/TellusPlugin
 
-Your QGIS plugin directory is located at:
-    /Users/dimas/.qgis2/python/plugins
-
-What's Next:
-
-  * Copy the entire directory containing your new plugin to the QGIS plugin
-    directory
-
-  * Compile the resources file using pyrcc4
-
-  * Run the tests (``make test``)
-
-  * Test the plugin by enabling it in the QGIS plugin manager
-
-  * Customize it by editing the implementation file: ``tellus_processing.py``
-
-  * Create your own custom icon, replacing the default icon.png
-
-  * Modify your user interface by opening TellusProcessing.ui in Qt Designer
-
-  * You can use the Makefile to compile your Ui and resource files when
-    you make changes. This requires GNU make (gmake)
-
-For more information, see the PyQGIS Developer Cookbook at:
-http://www.qgis.org/pyqgis-cookbook/index.html
-
-(C) 2011-2018 GeoApt LLC - geoapt.com
+Le dossier contenant le plugin QGIS est situé :
+    YOUR PATH TO/.qgis2/python/plugins
+    
+Le plugin est effectif pour lire des données SEG-Y de Radsys.
+Il est possible de lire un ou plusieurs fichier(s) SEG-Y à la fois.
+Les informations de chaque fichier sont affichées directement dans le plugin :
+    - chemin du fichier
+    - nombre de traces du fichier
+    - début et fin des traces à traiter (il est possible de modifier ces deux valeurs)
+    - l'affichage ou non du radargramme associé au fichier (par défaut "non" mais peut être changé)
+    - distance entre chaque point (par défaut 0 pour prendre toutes les traces)
+    
