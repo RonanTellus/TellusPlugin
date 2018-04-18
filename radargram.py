@@ -21,23 +21,24 @@ class fig_gui:
             self.rad_sample=[];
             self.gps_sample=[];
         else :
+            #nom du fichier
             self.name = name
             self.rad_sample=rad_sample;
             self.gps_sample=gps_sample;
+            #numéro du début des traces
             self.fr = from_trace
+            #fin de l'intervale du fichier
             self.tr=to_trace
-            print(from_trace)
-            print (name)
 
      
         
         self.fig = plt.figure()
         self.fig.canvas.set_window_title(self.name) 
         seg = survey_reader(self.name)
-# create a group of traces from seg-y 
+        # create a group of traces from seg-y 
         self.ax  = [self.fig.add_subplot(111)]
         self.update(self.rad_sample)                            # add data to plot
-
+        
         cli = cursor(self.name,self.fr)              # new cursors object
         self.fig.signal = cli          # connect it with fig object 
 
@@ -86,31 +87,41 @@ class cursor:
         self.transform = lambda x,y,z: [x,y,z]
         exist = len(QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')) != 0
         if (exist == False):
+            #création des colonnes dans le tableau d'attributs points d'intérêt
             layer = QgsVectorLayer('Point?crs=epsg:4326&field=Trace:int&field=x&field=y&field=z&field=Profondeur&field=Nom du fichier&field=Commentaire', 'Points d\'interet' , 'memory')
             self.layer = layer
+             #self.prov sert remplir les données du tableau
             self.prov = layer.dataProvider()
             QgsMapLayerRegistry.instance().addMapLayers([layer])
         else:
+            #création de la couche nommée points d'intérêt
             layers = QgsMapLayerRegistry.instance().mapLayersByName('Points d\'interet')
             for layer in layers:
                 self.layer = layer
-                print self.layer
+                #self.prov sert à remplir les données du tableau
                 self.prov = self.layer.dataProvider()
 
-    def get_pos(self,event):
-        res = [int(event.xdata),int(event.ydata)]
-        return 
+    
     def set_pos(self,event,name):
+        #vérifie que le click soit bien dans le cadre
         if(event.xdata != None):
             self.pos = self.transform(int(event.xdata),int(event.ydata))
+            #x : Longitude
+            #y : Latitude
+            #z : altitude
+            #w : profondeur
             x = self.pos[0]
             y = self.pos[1]
             z = self.pos[2]
             w = self.pos[3]
+            # la couche
             layer = self.layer
+            # reprend le prov dans l'init
             prov = self.prov
             fet = QgsFeature()
+            #ajoute le point
             fet.setGeometry(QgsGeometry.fromPoint(QgsPoint(x,y)))
+            #ajoute les valeurs 
             fet.setAttributes([ self.fr + int(event.xdata),float(x),float(y),float(z),float(w),self.name,""])
             prov.addFeatures([fet])
             # update layer's extent when new features have been added

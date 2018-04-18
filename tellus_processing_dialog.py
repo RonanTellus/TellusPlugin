@@ -64,20 +64,18 @@ class TellusProcessingDialog(QDialog):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
 
-
         self.ui = Ui_TellusProcessingDialogBase()
         self.ui.setupUi(self)
         self.connect(self.ui.parcourirBtn,SIGNAL("clicked()"),self.inFile)
+        
 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept) 
-        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
+        self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.make_ok) 
+         #self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.accept)
+        #self.connect(self.ui.buttonLancer, SIGNAL("clicked()"),self.createtoline)
 
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.reject)
         self.connect(self.ui.buttonAnnuler, SIGNAL("clicked()"),self.resetData)
-		
-        self.connect(self.ui.buttonExporter,SIGNAL("clicked()"),self.exportData)
-        self.connect(self.ui.buttonExporter,SIGNAL("clicked()"),self.reject)
-
+	
         self.setWindowTitle("Lecteur SEG-Y")
         
 
@@ -111,17 +109,14 @@ class TellusProcessingDialog(QDialog):
            combo.addItem("oui")
            
            name = str(rowPosition)
-           print(name)
            boutonSup = QtGui.QPushButton(name, self)
            boutonSup.setToolTip(name)
-           print("nameobject")
 
            boutonSup.setText("X")
            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-           print(str(boutonSup.toolTip()))
            boutonSup.clicked.connect(partial(self.make_delete,rowPosition))  
            #boutonSup.clicked.connect(SLOT("delete(rowPosition)"))
-                       
+
 
            nbTraces = QtGui.QTableWidgetItem()
            nbTraces.setText(str(seg.nb_traces))
@@ -134,41 +129,43 @@ class TellusProcessingDialog(QDialog):
            self.ui.tableWidget.setCellWidget(rowPosition,4,combo)
            self.ui.tableWidget.setCellWidget(rowPosition,5,boutonSup)
         
-
+    
+    def make_ok(self):
+        if(self.ui.tableWidget.rowCount() == 0):
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Aucun fichier sélectionné".decode("utf-8"))
+            msg.setWindowTitle("Erreur")
+            msg.exec_()
+        else:
+            self.accept()
+            self.createtoline()
+        
     def make_delete(self,ligne):
        l = int(ligne)
-       print(45)
-       print(l)
        self.ui.tableWidget.removeRow(l)  
        rowPosition = self.ui.tableWidget.rowCount()
        while l< rowPosition:
            name = str(l)
-           print(name)
            boutonSup = QtGui.QPushButton(name, self)
            boutonSup.setToolTip(name)
-           print("nameobject")
-
            boutonSup.setText("X")
            boutonSup.setStyleSheet('QPushButton{background-color: "#FFFFFF";color:black; font-weight: bold;}   QPushButton:hover{background-color: "#FF0000";color:white; font-weight: bold;}')
-           print(str(boutonSup.toolTip()))
            boutonSup.clicked.connect(partial(self.make_delete,l))  
            self.ui.tableWidget.setCellWidget(l,5,boutonSup)
            l = l+1
 
-
+#createtoline fonction qui permet de créer la visualisation 
  
     
     def createtoline(self):
 
-
-        
         files = eval(self.ui.pathLineEdit.text())
-
+        #parcours tous les fichiers 
         for row in xrange(self.ui.tableWidget.rowCount()):
             selected = self.ui.tableWidget.currentRow()
-            print selected
-
-
+            
+            #chaque item corespond à une colonne item est la première item 4 la 5ème
             item = self.ui.tableWidget.item(row, 0)
             item1 = self.ui.tableWidget.item(row, 1)
             item2 = self.ui.tableWidget.item(row, 2)
@@ -181,28 +178,32 @@ class TellusProcessingDialog(QDialog):
             text3 = item3.text()
             text4 = item4.currentText()
 
-
-
             filename = os.path.splitext(os.path.basename(text))[0]
 
             seg = survey_reader(text)
 
             distance = self.ui.sbParamDistance.text()
 
+            #convertis en cm !
             d = float(distance)/100
-          
-            a = 0.15
             
             rad_img = radargram(seg.get_traces())
-
-            from_trace = int(text2)
-            to_trace = int(text3)
+            
+            if(int(text3)>int(text1)):
+                
+                to_trace = int(text1)
+            else:
+                to_trace = int(text3)
+            if(int(text2)<0):
+                from_trace = 1
+            else:
+                from_trace = int(text2)
+                
             
             rad_metre  = rad_img.read_position_meter([from_trace,to_trace,1])
-            
             gps_sample  = rad_img.read_position([from_trace,to_trace,1])
             
-
+            
             if (text4 == "oui"):
                 rad_sample  = rad_img.read_trace([from_trace,to_trace,1])           # extracte data 1 on 2
                 myfig = fig_gui(filename,rad_sample,gps_sample,from_trace,to_trace)                                   # new fig object
@@ -211,6 +212,10 @@ class TellusProcessingDialog(QDialog):
             self.Progress=progressBar(' Lecture du SEG-Y ',len(rad_metre[0]))
 
             #Prend en compte le paramère distance renseigné en cm dans le plugin afin de mettre en mémoire les point avec une distance égale à (cm) entre deux points
+            
+            
+            
+            #tableau des points gardés
             xm = []
             ym = []
             zm = []
@@ -220,6 +225,7 @@ class TellusProcessingDialog(QDialog):
             xc =  float(rad_metre[1][0])
             yc = float(rad_metre[0][0])
             zc = float(rad_metre[2][0])
+            #boucle et calcule les distances
             for i in range(len(rad_metre[0])):
                 self.Progress.addStep()
                 if gps_sample[1][i] != 0 or gps_sample[0][i] != 0:
@@ -264,44 +270,14 @@ class TellusProcessingDialog(QDialog):
                 QgsMapLayerRegistry.instance().addMapLayers([layer])
                 #bar.increaseValue()
             self.Progress.reset()
+        self.resetData()
 
-
+    #fonction qui permet de supprimé les fichiers dans le tableau(interface)
     def resetData(self):
         self.ui.tableWidget.setRowCount(0)
         self.ui.pathLineEdit.setText("")
-		
 	
-    def exportData(self):
-            name = QtGui.QFileDialog.getSaveFileName(self, 'Save your Data',"export_data","CSV flies (*.csv)")  
-            if (name !="") :      
-                selectedIndexes = iface.legendInterface().selectedLayers()
-                selectedLayers = []
-                if len(selectedIndexes) == 0:
-                    print "Selection vide "
-                elif len(selectedIndexes) == 1:
-                    selectedLayers = [iface.activeLayer()]
-                else:
-                    selectLayers = iface.legendInterface().selectedLayers()
-                    for layer in selectLayers:
-                        selectedLayers.append(layer)
-                        if layer.wkbType() == QGis.WKBLineString:
-                            print "couche selectionnee type ligne: :",  layer.name()
-                            selectedLayers.append(layer)
-
-                exportFile = open(name, "w")
-                exportFile.write("Trace,x,y\n")
-                #name source
-                for line in selectedLayers:
-                    with edit(line):
-                        features = line.getFeatures()
-                        #f = line.getFeatures().next()
-                        for f in features:
-                            aux =""
-                            for ii in f.attributes():
-                                aux = aux + ","+str(ii)
-                            exportFile.write(aux[1:]+"\n")
-                exportFile.close()
-
+	
 
 
 class progressBar():
@@ -334,12 +310,14 @@ class progressBar():
             # set Maximum for progressBar
             prgBar.setMaximum(inMaxStep)
             
+    #fait avancé la bar de progression        
     def addStep(self):
         """!@brief Add a step to the progressBar
         addStep() simply add +1 to current value of the progressBar
         """
         plusOne=self.prgBar.value()+1
         self.prgBar.setValue(plusOne)
+        #redémarre la bar de progression
     def reset(self):
         """!@brief Simply remove progressBar and reset cursor
         
